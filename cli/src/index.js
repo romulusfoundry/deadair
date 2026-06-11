@@ -1,22 +1,22 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
-import { ensureInstallId, loadConfig, KICKFLIP_DIR } from './config.js';
+import { ensureInstallId, loadConfig, DEADAIR_DIR } from './config.js';
 import { register, fetchStats } from './api.js';
 import { runGemini } from './gemini.js';
 import { runCodex } from './codex.js';
 import { restorePhrases } from './gemini.js';
 
 const HELP = `
-kickflip — get paid to wait
+deadair — get paid to wait
 
 usage:
-  kickflip gemini [args...]   launch Gemini CLI with sponsored spinner phrases
-  kickflip codex [args...]    launch Codex CLI (exec mode gets the ad spinner)
-  kickflip status             your install id, founder status, time accrued
-  kickflip uninstall          restore Gemini settings and remove local data
+  deadair gemini [args...]   launch Gemini CLI with sponsored spinner phrases
+  deadair codex [args...]    launch Codex CLI (exec mode gets the ad spinner)
+  deadair status             your install id, founder status, time accrued
+  deadair uninstall          restore Gemini settings and remove local data
 
 first 1,000 installs keep 75% of ad revenue, forever. everyone else: 50%.
-https://kickflip.sh
+https://deadair.tech
 `;
 
 async function status() {
@@ -36,8 +36,8 @@ async function status() {
 async function uninstall() {
   const restored = restorePhrases();
   console.log(restored ? 'restored Gemini witty phrases' : 'no Gemini backup to restore');
-  fs.rmSync(KICKFLIP_DIR, { recursive: true, force: true });
-  console.log('removed ~/.kickflip — goodbye');
+  fs.rmSync(DEADAIR_DIR, { recursive: true, force: true });
+  console.log('removed ~/.deadair — goodbye');
 }
 
 async function main() {

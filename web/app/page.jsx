@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 const DEMO_LINES = [
-  'This wait could be sponsored. Your logo here — kickflip.sh',
-  'Get paid to wait. First 1,000 installs keep 75% forever — kickflip.sh',
-  'Works with Codex, Gemini CLI, and friends — kickflip.sh'
+  'This wait could be sponsored. Your logo here — deadair.tech',
+  'Get paid to wait. First 1,000 installs keep 75% forever — deadair.tech',
+  'Works with Codex, Gemini CLI, and friends — deadair.tech'
 ];
 
 function LiveSpinner() {
@@ -19,7 +19,7 @@ function LiveSpinner() {
   }, []);
   return (
     <div className="terminal">
-      <span className="prompt">$</span> kickflip codex exec "fix the failing tests"{'\n'}
+      <span className="prompt">$</span> deadair codex exec "fix the failing tests"{'\n'}
       <span className="spin">{FRAMES[frame]}</span> <span className="ad">{DEMO_LINES[line]}</span>
     </div>
   );
@@ -48,7 +48,7 @@ export default function Home() {
 
   return (
     <main>
-      <h1>kickflip</h1>
+      <h1>deadair</h1>
       <p className="tagline">
         Get paid to wait. Sponsored spinner lines for Codex, Gemini CLI, and
         every coding agent. Advertisers buy the line; <strong>you keep 75%</strong> if
@@ -63,22 +63,22 @@ export default function Home() {
       </div>
 
       <h2>install</h2>
-      <InstallCmd text="npm i -g kickflip-cli" />
+      <InstallCmd text="npm i -g deadair" />
       <p className="tagline">then just prefix your agent:</p>
-      <InstallCmd text="kickflip codex" />
-      <InstallCmd text="kickflip gemini" />
+      <InstallCmd text="deadair codex" />
+      <InstallCmd text="deadair gemini" />
 
       <h2>how it works</h2>
       <ol className="how">
         <li>While your agent thinks, the spinner shows a sponsored line instead of a witty one.</li>
         <li>We track verified wait-time. Sponsors pay flat monthly rates for the inventory.</li>
         <li>Revenue splits to installs pro-rata by wait-time. Cash out at $25 via gift card.</li>
-        <li><code>kickflip uninstall</code> restores everything. No daemon, no telemetry beyond session seconds.</li>
+        <li><code>deadair uninstall</code> restores everything. No daemon, no telemetry beyond session seconds.</li>
       </ol>
 
       <div className="founder-banner">
         ★ Founder rate: the first 1,000 installs keep 75% of their share of ad
-        revenue forever. Check yours with <code>kickflip status</code>.
+        revenue forever. Check yours with <code>deadair status</code>.
       </div>
 
       <h2>for sponsors</h2>

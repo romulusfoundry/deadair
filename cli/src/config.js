@@ -3,16 +3,16 @@ import path from 'node:path';
 import os from 'node:os';
 import crypto from 'node:crypto';
 
-export const KICKFLIP_DIR = path.join(os.homedir(), '.kickflip');
-const CONFIG_PATH = path.join(KICKFLIP_DIR, 'config.json');
+export const DEADAIR_DIR = path.join(os.homedir(), '.deadair');
+const CONFIG_PATH = path.join(DEADAIR_DIR, 'config.json');
 
 const DEFAULTS = {
   installId: null,
   registered: false,
   founder: false,
   founderNumber: null,
-  // swap to https://kickflip.sh before npm publish once the domain is bought
-  apiBase: process.env.KICKFLIP_API || 'https://kickflip-mocha.vercel.app',
+  // swap to https://deadair.tech before npm publish once the domain is bought
+  apiBase: process.env.DEADAIR_API || 'https://deadair-six.vercel.app',
   creatives: { fetchedAt: 0, items: [] },
   totals: { seconds: 0, sessions: 0 }
 };
@@ -24,12 +24,12 @@ export function loadConfig() {
   } catch {
     config = { ...DEFAULTS };
   }
-  if (process.env.KICKFLIP_API) config.apiBase = process.env.KICKFLIP_API;
+  if (process.env.DEADAIR_API) config.apiBase = process.env.DEADAIR_API;
   return config;
 }
 
 export function saveConfig(config) {
-  fs.mkdirSync(KICKFLIP_DIR, { recursive: true });
+  fs.mkdirSync(DEADAIR_DIR, { recursive: true });
   fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
 }
 

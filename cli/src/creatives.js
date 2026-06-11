@@ -1,9 +1,9 @@
 // House lines shown when no sponsor inventory is available (offline, or
 // unsold slots). A blank slot reads as a dead network — never show nothing.
 export const HOUSE_LINES = [
-  { text: 'This wait could be sponsored. Your logo here', sponsor: 'kickflip.sh', url: 'https://kickflip.sh/sponsor' },
-  { text: 'Get paid to wait. First 1,000 installs keep 75% forever', sponsor: 'kickflip.sh', url: 'https://kickflip.sh' },
-  { text: 'Works with Codex, Gemini CLI, and friends', sponsor: 'kickflip.sh', url: 'https://kickflip.sh' }
+  { text: 'This wait could be sponsored. Your logo here', sponsor: 'deadair.tech', url: 'https://deadair.tech/sponsor' },
+  { text: 'Get paid to wait. First 1,000 installs keep 75% forever', sponsor: 'deadair.tech', url: 'https://deadair.tech' },
+  { text: 'Works with Codex, Gemini CLI, and friends', sponsor: 'deadair.tech', url: 'https://deadair.tech' }
 ];
 
 export function formatLine(creative) {

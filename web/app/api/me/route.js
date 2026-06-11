@@ -10,8 +10,8 @@ export async function GET(request) {
 
   const db = serviceClient();
   const [{ data: install }, { data: sessions, error }] = await Promise.all([
-    db.from('kickflip_installs_v').select('founder, rev_share').eq('id', installId).single(),
-    db.from('kickflip_sessions').select('seconds').eq('install_id', installId)
+    db.from('deadair_installs_v').select('founder, rev_share').eq('id', installId).single(),
+    db.from('deadair_sessions').select('seconds').eq('install_id', installId)
   ]);
   if (error || !install) return Response.json({ error: 'not found' }, { status: 404 });
 

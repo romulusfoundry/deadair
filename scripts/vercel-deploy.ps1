@@ -9,7 +9,7 @@ function Get-EnvValue($path, $key) {
 }
 
 $ws = 'C:\Users\muckr\.openclaw\workspace'
-$webDir = "$ws\kickflip\web"
+$webDir = "$ws\deadair\web"
 $token = Get-EnvValue "$ws\.env" 'VERCEL_TOKEN'
 $team = Get-EnvValue "$ws\.env" 'VERCEL_TEAM_ID'
 $supaUrl = Get-EnvValue "$ws\market-corr\web\.env.local" 'NEXT_PUBLIC_SUPABASE_URL'
@@ -19,10 +19,10 @@ $headers = @{ Authorization = "Bearer $token"; 'Content-Type' = 'application/jso
 
 # 1. Ensure project exists (no git link)
 try {
-  $project = Invoke-RestMethod -Method Get -Uri "https://api.vercel.com/v9/projects/kickflip?teamId=$team" -Headers $headers
+  $project = Invoke-RestMethod -Method Get -Uri "https://api.vercel.com/v9/projects/deadair?teamId=$team" -Headers $headers
   Write-Output "project exists: $($project.id)"
 } catch {
-  $body = @{ name = 'kickflip'; framework = 'nextjs' } | ConvertTo-Json
+  $body = @{ name = 'deadair'; framework = 'nextjs' } | ConvertTo-Json
   $project = Invoke-RestMethod -Method Post -Uri "https://api.vercel.com/v11/projects?teamId=$team" -Headers $headers -Body $body
   Write-Output "project created: $($project.id)"
 }
@@ -32,7 +32,7 @@ $envBody = ConvertTo-Json @(
   @{ key = 'NEXT_PUBLIC_SUPABASE_URL'; value = $supaUrl; type = 'encrypted'; target = @('production','preview') },
   @{ key = 'SUPABASE_SERVICE_ROLE_KEY'; value = $supaKey; type = 'encrypted'; target = @('production','preview') }
 ) -Depth 4
-Invoke-RestMethod -Method Post -Uri "https://api.vercel.com/v10/projects/kickflip/env?teamId=$team&upsert=true" -Headers $headers -Body $envBody | Out-Null
+Invoke-RestMethod -Method Post -Uri "https://api.vercel.com/v10/projects/deadair/env?teamId=$team&upsert=true" -Headers $headers -Body $envBody | Out-Null
 Write-Output 'env vars upserted'
 
 # 3. Collect web/ files (skip node_modules, .next, env files)
@@ -54,8 +54,8 @@ Write-Output "uploading $($fileEntries.Count) files"
 
 # 4. Create deployment
 $deployBody = @{
-  name = 'kickflip'
-  project = 'kickflip'
+  name = 'deadair'
+  project = 'deadair'
   target = 'production'
   files = $fileEntries
   projectSettings = @{ framework = 'nextjs' }

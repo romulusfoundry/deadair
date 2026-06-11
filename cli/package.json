@@ -1,10 +1,10 @@
 {
-  "name": "kickflip-cli",
+  "name": "deadair",
   "version": "0.1.0",
   "description": "Get paid to wait. Sponsored spinner lines for Codex, Gemini CLI, and every coding agent that isn't Claude Code.",
   "type": "module",
   "bin": {
-    "kickflip": "./src/index.js"
+    "deadair": "./src/index.js"
   },
   "files": [
     "src"

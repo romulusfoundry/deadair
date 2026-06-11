@@ -8,7 +8,7 @@ export async function POST(request) {
   }
 
   const db = serviceClient();
-  const { error } = await db.from('kickflip_installs').upsert(
+  const { error } = await db.from('deadair_installs').upsert(
     {
       id: installId,
       platform: String(body.platform || '').slice(0, 32),
@@ -19,7 +19,7 @@ export async function POST(request) {
   if (error) return Response.json({ error: 'db error' }, { status: 500 });
 
   const { data, error: readError } = await db
-    .from('kickflip_installs_v')
+    .from('deadair_installs_v')
     .select('install_number, founder, rev_share')
     .eq('id', installId)
     .single();

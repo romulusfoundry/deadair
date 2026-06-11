@@ -14,7 +14,7 @@ export async function POST(request) {
 
   const db = serviceClient();
   // session_id is the idempotency key: re-reports of the same session no-op
-  const { error } = await db.from('kickflip_sessions').upsert(
+  const { error } = await db.from('deadair_sessions').upsert(
     {
       session_id: body.session_id,
       install_id: body.install_id,

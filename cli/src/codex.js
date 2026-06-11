@@ -39,7 +39,7 @@ export async function runCodex(args) {
         resolve(await finish(code));
       });
       child.on('error', () => {
-        console.error('kickflip: could not launch `codex` — is Codex CLI installed?');
+        console.error('deadair: could not launch `codex` — is Codex CLI installed?');
         resolve(1);
       });
     });
@@ -65,7 +65,7 @@ export async function runCodex(args) {
     });
     child.on('error', () => {
       spinner.stop();
-      console.error('kickflip: could not launch `codex` — is Codex CLI installed?');
+      console.error('deadair: could not launch `codex` — is Codex CLI installed?');
       resolve(1);
     });
   });

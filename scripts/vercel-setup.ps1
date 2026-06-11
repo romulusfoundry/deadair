@@ -1,4 +1,4 @@
-# One-time Vercel project setup for kickflip. Reads tokens from workspace .env
+# One-time Vercel project setup for deadair. Reads tokens from workspace .env
 # and Supabase values from market-corr's env. Prints status only — never values.
 $ErrorActionPreference = 'Stop'
 
@@ -18,10 +18,10 @@ $headers = @{ Authorization = "Bearer $token"; 'Content-Type' = 'application/jso
 
 # 1. Create project linked to the GitHub repo
 $projectBody = @{
-  name = 'kickflip'
+  name = 'deadair'
   framework = 'nextjs'
   rootDirectory = 'web'
-  gitRepository = @{ type = 'github'; repo = 'romulusfoundry/kickflip' }
+  gitRepository = @{ type = 'github'; repo = 'romulusfoundry/deadair' }
 } | ConvertTo-Json -Depth 4
 
 try {
@@ -31,7 +31,7 @@ try {
   $detail = $_.ErrorDetails.Message
   if ($detail -match 'already exists') {
     Write-Output 'project already exists - continuing'
-    $project = Invoke-RestMethod -Method Get -Uri "https://api.vercel.com/v9/projects/kickflip?teamId=$team" -Headers $headers
+    $project = Invoke-RestMethod -Method Get -Uri "https://api.vercel.com/v9/projects/deadair?teamId=$team" -Headers $headers
   } else { throw "project create failed: $detail" }
 }
 
@@ -40,15 +40,15 @@ $envBody = ConvertTo-Json @(
   @{ key = 'NEXT_PUBLIC_SUPABASE_URL'; value = $supaUrl; type = 'encrypted'; target = @('production','preview') },
   @{ key = 'SUPABASE_SERVICE_ROLE_KEY'; value = $supaKey; type = 'encrypted'; target = @('production','preview') }
 ) -Depth 4
-Invoke-RestMethod -Method Post -Uri "https://api.vercel.com/v10/projects/kickflip/env?teamId=$team&upsert=true" -Headers $headers -Body $envBody | Out-Null
+Invoke-RestMethod -Method Post -Uri "https://api.vercel.com/v10/projects/deadair/env?teamId=$team&upsert=true" -Headers $headers -Body $envBody | Out-Null
 Write-Output 'env vars set: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY'
 
 # 3. Trigger a deployment from the linked repo
 $repoId = $project.link.repoId
-if (-not $repoId) { throw 'project has no linked repo - check GitHub integration access for romulusfoundry/kickflip' }
+if (-not $repoId) { throw 'project has no linked repo - check GitHub integration access for romulusfoundry/deadair' }
 $deployBody = @{
-  name = 'kickflip'
-  project = 'kickflip'
+  name = 'deadair'
+  project = 'deadair'
   target = 'production'
   gitSource = @{ type = 'github'; repoId = $repoId; ref = 'master' }
 } | ConvertTo-Json -Depth 4

@@ -2,12 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { spawnCli } from './proc.js';
-import { KICKFLIP_DIR } from './config.js';
+import { DEADAIR_DIR } from './config.js';
 import { fetchCreatives, reportSession } from './api.js';
 import { HOUSE_LINES, formatLine } from './creatives.js';
 
 const GEMINI_SETTINGS = path.join(os.homedir(), '.gemini', 'settings.json');
-const BACKUP_PATH = path.join(KICKFLIP_DIR, 'gemini-witty-backup.json');
+const BACKUP_PATH = path.join(DEADAIR_DIR, 'gemini-witty-backup.json');
 
 // Gemini CLI's sanctioned hook: ui.customWittyPhrases replaces the spinner's
 // loading phrases. We merge sponsored lines in and restore on uninstall.
@@ -21,7 +21,7 @@ export function injectPhrases(creatives) {
   settings.ui = settings.ui || {};
 
   if (!fs.existsSync(BACKUP_PATH)) {
-    fs.mkdirSync(KICKFLIP_DIR, { recursive: true });
+    fs.mkdirSync(DEADAIR_DIR, { recursive: true });
     fs.writeFileSync(
       BACKUP_PATH,
       JSON.stringify({ customWittyPhrases: settings.ui.customWittyPhrases ?? null })
@@ -69,7 +69,7 @@ export async function runGemini(args) {
       resolve(code ?? 0);
     });
     child.on('error', () => {
-      console.error('kickflip: could not launch `gemini` — is Gemini CLI installed?');
+      console.error('deadair: could not launch `gemini` — is Gemini CLI installed?');
       resolve(1);
     });
   });

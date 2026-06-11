@@ -8,7 +8,7 @@ export async function POST(request) {
   }
 
   const db = serviceClient();
-  const { error } = await db.from('kickflip_sponsor_leads').insert({
+  const { error } = await db.from('deadair_sponsor_leads').insert({
     email,
     company: String(body.company || '').slice(0, 200),
     message: String(body.message || '').slice(0, 2000)
