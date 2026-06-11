@@ -1,0 +1,23 @@
+{
+  "name": "kickflip-cli",
+  "version": "0.1.0",
+  "description": "Get paid to wait. Sponsored spinner lines for Codex, Gemini CLI, and every coding agent that isn't Claude Code.",
+  "type": "module",
+  "bin": {
+    "kickflip": "./src/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "codex",
+    "gemini-cli",
+    "spinner",
+    "ads",
+    "kickbacks"
+  ],
+  "license": "MIT"
+}
