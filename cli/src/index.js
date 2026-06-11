@@ -47,12 +47,14 @@ async function main() {
   switch (command) {
     case 'gemini': {
       await register();
-      process.exit(await runGemini(args));
+      // exitCode (not process.exit) lets libuv handles drain — exit() here
+      // trips a UV_HANDLE_CLOSING assert on Windows
+      process.exitCode = await runGemini(args);
       break;
     }
     case 'codex': {
       await register();
-      process.exit(await runCodex(args));
+      process.exitCode = await runCodex(args);
       break;
     }
     case 'status':

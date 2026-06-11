@@ -11,7 +11,8 @@ const DEFAULTS = {
   registered: false,
   founder: false,
   founderNumber: null,
-  apiBase: process.env.KICKFLIP_API || 'https://kickflip.sh',
+  // swap to https://kickflip.sh before npm publish once the domain is bought
+  apiBase: process.env.KICKFLIP_API || 'https://kickflip-mocha.vercel.app',
   creatives: { fetchedAt: 0, items: [] },
   totals: { seconds: 0, sessions: 0 }
 };
