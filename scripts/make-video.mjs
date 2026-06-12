@@ -170,6 +170,14 @@ text({ s: 'deadair.online', x: CENTER, y: 645, size: 42, color: C.amber, t0: 27.
 text({ s: 'sell your dead air', x: CENTER, y: 720, size: 32, color: C.dim, t0: 27.3, t1: 28.8 });
 
 const head = `color=c=${C.bg}:s=${W}x${H}:d=${DUR}:r=${FPS}[bg];`;
-const script = head + chain.join(';') + `;[v${n}]format=yuv420p[vout]`;
+// TV-static "tune-in": dead air IS static. Snow at ~50% opacity over the
+// hook (text stays readable on a paused scroll), clearing as the signal
+// tunes in over the first ~3s.
+const staticBranch =
+  `color=c=0x707070:s=${W}x${H}:d=3.6:r=${FPS}[ns0];` +
+  `[ns0]noise=alls=100:allf=t+u,hue=s=0,format=yuva420p,colorchannelmixer=aa=0.45,` +
+  `fade=t=out:st=0.6:d=2.6:alpha=1[static]`;
+const script = head + chain.join(';') + ';' + staticBranch +
+  `;[v${n}][static]overlay=enable='lt(t,3.4)'[vS];[vS]format=yuv420p[vout]`;
 fs.writeFileSync('scripts/_video_filter.txt', script);
-console.log(`wrote filtergraph: ${chain.length} layers, ${DUR}s`);
+console.log(`wrote filtergraph: ${chain.length} layers + static tune-in, ${DUR}s`);

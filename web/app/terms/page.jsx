@@ -20,7 +20,9 @@ export default function Terms() {
         <li>Accrued balances are promotional rewards, not wages, deposits, or interest-bearing accounts. Earnings are not guaranteed; if there is no sponsor revenue, balances are $0.</li>
         <li>Cashing out requires linking a verified email to your install. Minimum payout is $25, fulfilled via gift card or prepaid card through a third-party payout provider.</li>
         <li>Linked balances over $250 or idle for 12 months may be paid out automatically. Balances on installs that were never linked and have been inactive for 12 months are returned to the community revenue pool.</li>
-        <li>Fraud — including automated, scripted, or idle-farmed wait-time — voids accrued balances. We bill sponsors only for verified rendered time and protect that guarantee aggressively.</li>
+        <li>Fraud — including automated, scripted, or idle-farmed wait-time — voids accrued balances. If activity on an install resembles automation (continuous 24/7 sessions, machine-regular patterns, or other bot signatures), we may flag it, suspend accrual, and withhold or void payouts pending review, at our discretion.</li>
+        <li>Countable wait-time is capped per install per day (currently 8 hours) — generous for real use, worthless for farming. We bill sponsors only for verified rendered time and protect that guarantee aggressively.</li>
+        <li>Voided and forfeited balances are returned to the community revenue pool in full. We never keep them — so we have no financial incentive to flag anyone.</li>
       </ol>
 
       <h2>sponsors</h2>
