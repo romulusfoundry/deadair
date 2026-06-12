@@ -4,3 +4,11 @@ node_modules/
 .env.local
 *.tsbuildinfo
 .vercel
+
+# video build artifacts (regenerate with scripts/make-video.mjs + ffmpeg)
+scripts/_*.txt
+scripts/_*.mp4
+scripts/_*.wav
+scripts/cascadia.ttf
+scripts/frames/
+scripts/deadair-trailer.mp4
