@@ -6,7 +6,9 @@ const CYAN = '\x1b[36m';
 const RESET = '\x1b[0m';
 const CLEAR_LINE = '\x1b[2K\r';
 
-const ROTATE_MS = 4000;
+// 5s per creative = one "impression" in the unit of account kickbacks taught
+// the market ($/1k five-second impressions) — keeps our inventory comparable
+const ROTATE_MS = 5000;
 const FRAME_MS = 80;
 
 // Renders our ad-carrying spinner on the parent terminal while a child

@@ -23,8 +23,9 @@ The first 1,000 installs keep **75%** of their share of ad revenue, forever.
 - **Codex** — Codex exposes no spinner hook, so `deadair codex exec ...`
   renders its own ad-carrying spinner while Codex's output streams through it;
   interactive sessions get a sponsored banner plus session timing.
-- Verified wait-time reports to the API and ad revenue from flat-rate sponsors
-  splits pro-rata: 75% to the first 1,000 installs forever, 50% after.
+- Verified wait-time reports to the API in 5-second impression units; net ad
+  revenue (after payment + payout processing) splits pro-rata: 75% to the
+  first 1,000 installs forever, 50% after. Cash out at $25 via gift card.
 
 ## Privacy & safety
 

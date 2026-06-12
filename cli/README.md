@@ -29,8 +29,9 @@ deadair run aider      # wrap ANY agent — aider, copilot, droid, opencode...
 
 ## You keep the money
 
-Ad revenue splits pro-rata by your verified wait-time: **the first 1,000
-installs keep 75% forever**, 50% after that. Check yours:
+Net ad revenue (after payment + payout processing) splits pro-rata by your
+verified wait-time: **the first 1,000 installs keep 75% forever**, 50% after
+that. Cash out at $25 via gift card or prepaid card. Check yours:
 
 ```sh
 deadair status

@@ -72,13 +72,20 @@ export default function Home() {
       <ol className="how">
         <li>While your agent thinks, the spinner shows a sponsored line instead of a witty one.</li>
         <li>We track verified wait-time. Sponsors pay flat monthly rates for the inventory.</li>
-        <li>Revenue splits to installs pro-rata by wait-time. Cash out at $25 via gift card.</li>
+        <li>Revenue splits to installs pro-rata by verified wait-time, in 5-second impression units.</li>
         <li><code>deadair uninstall</code> restores everything. No daemon, no telemetry beyond session seconds.</li>
       </ol>
 
+      <h2>getting paid</h2>
+      <ol className="how">
+        <li>Your share accrues automatically per rendered wait-second — check it anytime with <code>deadair status</code>.</li>
+        <li>At <strong>$25</strong> you cash out: gift cards or prepaid card, sent to your verified email.</li>
+        <li>Shares are computed on net ad revenue (after payment + payout processing). No revenue pool yet means balances start at $0 — founding sponsors fund the first pool.</li>
+      </ol>
+
       <div className="founder-banner">
-        ★ Founder rate: the first 1,000 installs keep 75% of their share of ad
-        revenue forever. Check yours with <code>deadair status</code>.
+        ★ Founder rate: the first 1,000 installs keep 75% of their share of net
+        ad revenue forever; 50% after. Check yours with <code>deadair status</code>.
       </div>
 
       <h2>for sponsors</h2>
@@ -88,9 +95,9 @@ export default function Home() {
       </p>
 
       <p className="footer">
-        open source · works with Codex + Gemini CLI today, more agents next ·
+        open source · Codex + Gemini CLI native, any agent via <code>deadair run</code> ·
         not affiliated with OpenAI, Google, or kickbacks.ai —
-        we're the one for everything else
+        they monetize your editor, we monetize your terminal
       </p>
     </main>
   );
