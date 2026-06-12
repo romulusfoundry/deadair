@@ -6,7 +6,7 @@ share of the ad revenue for it. Works with **Codex** and **Gemini CLI** today.
 
 ```sh
 npm i -g deadair
-deadair codex     # or: deadair gemini, or `deadair run <any-agent>`
+deadair codex     # or: deadair gemini · deadair hermes · deadair <any-agent>
 ```
 
 The first 1,000 installs keep **75%** of their share of ad revenue, forever.

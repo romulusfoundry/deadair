@@ -196,7 +196,7 @@ const staticBranch =
   `fade=t=out:st=0.6:d=2.6:alpha=1[staticFull];` +
   `color=c=0x707070:s=${W}x${H}:d=11.3:r=${FPS}[ne0];` +
   `[ne0]noise=alls=100:allf=t+u,hue=s=0,format=yuva420p,` +
-  `geq=lum='lum(X,Y)':cb='cb(X,Y)':cr='cr(X,Y)':a='115*clip((hypot(X-${W / 2},Y-${H / 2})-400)/170,0,1)',` +
+  `geq=lum='lum(X,Y)':cb='cb(X,Y)':cr='cr(X,Y)':a='115*max(clip((97-Y)/97,0,1),clip((Y-${H - 97})/97,0,1))',` +
   `fade=t=out:st=10.95:d=0.15:alpha=1[staticEdge]`;
 const script = head + chain.join(';') + ';' + staticBranch +
   `;[v${n}][staticFull]overlay=enable='lt(t,3.3)'[vS1]` +

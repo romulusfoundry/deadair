@@ -13,7 +13,8 @@ deadair — sell your dead air
 usage:
   deadair gemini [args...]   launch Gemini CLI with sponsored spinner phrases
   deadair codex [args...]    launch Codex CLI (exec mode gets the ad spinner)
-  deadair run <cmd> [args]   wrap ANY agent (aider, copilot, droid, ...)
+  deadair <agent> [args...]  wrap ANY agent: deadair hermes, deadair aider,
+                             deadair openclaw, deadair copilot, ...
   deadair status             your install id, founder status, time accrued
   deadair uninstall          restore Gemini settings and remove local data
 
@@ -71,8 +72,18 @@ async function main() {
     case 'uninstall':
       await uninstall();
       break;
-    default:
+    case undefined:
+    case 'help':
+    case '--help':
+    case '-h':
       console.log(HELP.trim());
+      break;
+    default: {
+      // any other word is treated as an agent: `deadair hermes` ==
+      // `deadair run hermes` — the ad copy IS the interface
+      await register();
+      process.exitCode = await runGeneric([command, ...args]);
+    }
   }
 }
 
