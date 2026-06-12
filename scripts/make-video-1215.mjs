@@ -164,8 +164,13 @@ const staticBranch =
   `[ne0]noise=alls=100:allf=t+u,hue=s=0,format=yuva420p,` +
   `geq=lum='lum(X,Y)':cb='cb(X,Y)':cr='cr(X,Y)':a='115*max(clip((97-Y)/97,0,1),clip((Y-${H - 97})/97,0,1))',` +
   `fade=t=out:st=${(FLASH - 0.15).toFixed(2)}:d=0.15:alpha=1[staticEdge]`;
-const script = head + chain.join(';') + ';' + staticBranch +
-  `;[v${n}][staticFull]overlay=enable='lt(t,3.3)'[vS1]` +
-  `;[vS1][staticEdge]overlay=enable='between(t,3.0,${FLASH})'[vS2];[vS2]format=yuv420p[vout]`;
+// DEADAIR_NO_STATIC=1 → clean render with no TV-static layers (for adding
+// static as an editor effect, e.g. CapCut); flash + all timing unchanged.
+const NO_STATIC = process.env.DEADAIR_NO_STATIC === '1';
+const script = NO_STATIC
+  ? head + chain.join(';') + `;[v${n}]format=yuv420p[vout]`
+  : head + chain.join(';') + ';' + staticBranch +
+    `;[v${n}][staticFull]overlay=enable='lt(t,3.3)'[vS1]` +
+    `;[vS1][staticEdge]overlay=enable='between(t,3.0,${FLASH})'[vS2];[vS2]format=yuv420p[vout]`;
 fs.writeFileSync('scripts/_video_filter_1215.txt', script);
-console.log(`wrote filtergraph: ${chain.length} layers, flash at ${FLASH}s, ${DUR}s total`);
+console.log(`wrote filtergraph: ${chain.length} layers${NO_STATIC ? ' (NO static)' : ' + static tune-in'}, flash at ${FLASH}s, ${DUR}s total`);
