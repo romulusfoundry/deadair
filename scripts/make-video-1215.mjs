@@ -5,7 +5,7 @@
 // does NOT touch the standard outputs.
 import fs from 'node:fs';
 
-const OFF = 1.05; // 12.15 - 11.1
+const OFF = 1.15; // flash at 12.25 absolute — reads as ~12.15 in playback (user-observed -0.1s skew)
 const W = 1080, H = 1080, FPS = 30, DUR = 29.0 + OFF;
 const FONT = 'scripts/cascadia.ttf';
 
