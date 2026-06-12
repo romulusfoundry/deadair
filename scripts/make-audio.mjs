@@ -18,20 +18,22 @@ parts.push(`[0:a]volume=0.52,adelay=${DROP_MS}|${DROP_MS}[arp]`); labels.push('a
 parts.push(`[1:a]volume=0.48,adelay=${DROP_MS}|${DROP_MS}[pulse]`); labels.push('pulse');
 parts.push(`[2:a]volume=0.18,adelay=${DROP_MS}|${DROP_MS}[hat]`); labels.push('hat');
 
-// --- drone: present throughout but LOW — the intro must sit quiet so the
-// drop actually drops (intro RMS well under post-drop RMS) ---
-parts.push(`sine=frequency=55:duration=${DUR},volume=0.14[dr1]`);
-parts.push(`sine=frequency=110:duration=${DUR},volume=0.09[dr2]`);
-parts.push(`sine=frequency=164.81:duration=${DUR},volume=0.05[dr3]`);
+// --- keys motif: the intro IS this — warm circling phrase looping from
+// frame one (Kid A-shaped presence, original notes), continues under the drop
+parts.push('[3:a]volume=0.55[motif]'); labels.push('motif');
+
+// --- drone: low connective tissue under the motif ---
+parts.push(`sine=frequency=55:duration=${DUR},volume=0.20[dr1]`);
+parts.push(`sine=frequency=110:duration=${DUR},volume=0.12[dr2]`);
+parts.push(`sine=frequency=164.81:duration=${DUR},volume=0.06[dr3]`);
 parts.push('[dr1][dr2][dr3]amix=inputs=3:normalize=0,tremolo=f=0.8:d=0.4,lowpass=f=900[drone]');
 labels.push('drone');
 
-// --- intro bells: lonely high tones over the drone (eerie, sparse) ---
-// A-minor colors: E5, C5, A5, D5 — long decays, quiet, irregular spacing
-const BELLS = [[1000, 659.25], [3400, 523.25], [5600, 880], [7600, 587.33]];
+// --- two lonely high bells as accents over the motif ---
+const BELLS = [[3400, 880], [7200, 659.25]];
 BELLS.forEach(([ms, hz], i) => {
   parts.push(
-    `sine=frequency=${hz}:duration=1.8,volume=0.16,afade=t=in:d=0.02,` +
+    `sine=frequency=${hz}:duration=1.8,volume=0.12,afade=t=in:d=0.02,` +
     `afade=t=out:st=0.1:d=1.7,adelay=${ms}|${ms}[bell${i}]`
   );
   labels.push(`bell${i}`);
