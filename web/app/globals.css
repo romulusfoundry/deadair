@@ -21,6 +21,17 @@ body {
 
 main { max-width: 780px; margin: 0 auto; padding: 64px 24px 96px; }
 
+.topnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 40px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.topnav .brand { color: var(--dim); }
+.topnav a { color: var(--accent-2); font-weight: 700; }
+
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 

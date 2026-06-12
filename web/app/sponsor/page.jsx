@@ -27,6 +27,12 @@ export default function Sponsor() {
         that dead air — across every Codex and Gemini CLI session on the
         network. Plain text, clearly marked, no tracking pixels, no cookies.
       </p>
+      <p className="tagline">
+        Every creative is human-reviewed before it goes live: max 60 characters,
+        plain ASCII, no fake errors or system-message impersonation, nothing
+        that would make a developer distrust their own terminal. We bill
+        verified rendered wait-time, never raw session time.
+      </p>
 
       <div className="slot">
         <div className="price">$250/mo — founding rate</div>

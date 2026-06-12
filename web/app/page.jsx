@@ -48,6 +48,10 @@ export default function Home() {
 
   return (
     <main>
+      <nav className="topnav">
+        <span className="brand">deadair</span>
+        <a href="/sponsor">sponsor the dead air →</a>
+      </nav>
       <h1>deadair</h1>
       <p className="tagline">
         Your dead air is ad space. Sponsored spinner lines for Codex, Gemini CLI, and
@@ -71,6 +75,7 @@ export default function Home() {
       <h2>how it works</h2>
       <ol className="how">
         <li>While your agent thinks, the spinner shows a sponsored line instead of a witty one.</li>
+        <li>Every ad is human-reviewed before it ships: plain text only, sanitized, no fake-error bait, no tracking.</li>
         <li>We track verified wait-time. Sponsors pay flat monthly rates for the inventory.</li>
         <li>Revenue splits to installs pro-rata by verified wait-time, in 5-second impression units.</li>
         <li><code>deadair uninstall</code> restores everything. No daemon, no telemetry beyond session seconds.</li>
