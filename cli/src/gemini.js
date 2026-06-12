@@ -4,7 +4,7 @@ import os from 'node:os';
 import { spawnCli } from './proc.js';
 import { DEADAIR_DIR } from './config.js';
 import { fetchCreatives, reportSession } from './api.js';
-import { HOUSE_LINES, formatLine } from './creatives.js';
+import { HOUSE_LINES, formatLine, pickRotation } from './creatives.js';
 
 const GEMINI_SETTINGS = path.join(os.homedir(), '.gemini', 'settings.json');
 const BACKUP_PATH = path.join(DEADAIR_DIR, 'gemini-witty-backup.json');
@@ -67,7 +67,11 @@ export function restorePhrases() {
 
 export async function runGemini(args) {
   const creatives = await fetchCreatives();
-  injectPhrases(creatives);
+  // ONE creative per session (weighted pick): attribution becomes exact by
+  // construction — whatever Gemini rendered, it was this ad. Only "did it
+  // render at all" stays estimated (thought summaries can pre-empt phrases).
+  const sessionCreative = pickRotation(creatives)[0];
+  injectPhrases([sessionCreative]);
 
   const startedAt = new Date().toISOString();
   const start = Date.now();
@@ -76,15 +80,12 @@ export async function runGemini(args) {
   return new Promise((resolve) => {
     child.on('exit', async (code) => {
       const seconds = Math.round((Date.now() - start) / 1000);
-      // ESTIMATED tier: Gemini's TUI renders the phrases where we can't
-      // observe, so each pool creative gets an equal share of session time.
-      // Sponsor reporting must label gemini-pool as estimated, never verified.
-      const pool = (creatives || []).filter((c) => c.id);
-      const events = pool.map((c) => ({
-        creative_id: c.id,
-        surface: 'gemini-pool',
-        ms: Math.round((seconds * 1000) / pool.length)
-      }));
+      // ESTIMATED tier: we know exactly WHICH ad was in the spinner (single
+      // injection above) but not how long Gemini actually rendered it —
+      // sponsor reporting must label gemini-pool as estimated, never verified.
+      const events = sessionCreative.id
+        ? [{ creative_id: sessionCreative.id, surface: 'gemini-pool', ms: seconds * 1000 }]
+        : [];
       await reportSession({ cli: 'gemini', seconds, startedAt, events });
       resolve(code ?? 0);
     });
