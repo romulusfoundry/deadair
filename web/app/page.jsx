@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 const DEMO_LINES = [
-  'This wait could be sponsored. Your logo here — deadair.online',
+  'Statistically real, narratively absurd market signals — standardpoorly.com',
+  'This wait could be sponsored. Your name here — deadair.online',
   'Sell your dead air. First 1,000 installs keep 75% forever — deadair.online',
   'Works with Codex, Gemini CLI, and friends — deadair.online'
 ];

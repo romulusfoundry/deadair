@@ -48,6 +48,25 @@ export default function Sponsor() {
         )}
       </div>
 
+      <h2>measurement &amp; anti-fraud</h2>
+      <p className="tagline">
+        Every line we render is a terminal hyperlink through a logged
+        redirect — we count clicks per creative, per surface, per country,
+        and report CTR alongside impressions. Impressions are counted in
+        5-second units of verified rendered wait-time on surfaces we draw
+        ourselves; surfaces we don&apos;t draw (Gemini&apos;s native spinner)
+        are reported separately as estimated. We never blend the two.
+      </p>
+      <p className="tagline">
+        Countable wait-time is capped at 8 hours per day per install,
+        session and click velocity are monitored for bot signatures, and
+        every payout is human-reviewed before money moves. Founding slots
+        are flat-rate, so inflated numbers wouldn&apos;t earn us a cent —
+        and forfeited fraudulent balances return to the community revenue
+        pool, not to us. You get a monthly report per creative: impressions,
+        clicks, CTR, and country split.
+      </p>
+
       <h2>reserve a slot</h2>
       {state === 'done' ? (
         <p className="ok">Got it. We'll reply within a day with available slots and creative specs.</p>

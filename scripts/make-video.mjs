@@ -151,8 +151,8 @@ for (let k = 1; k <= cmd2.length; k++) {
 // demonstrated end to end (17.4+)
 spinner(190, 385, 26, C.cyan, 17.4, TERM_END - 0.2);
 const ads = [
-  'This wait could be sponsored. Your logo here',
-  'Works with Codex, Gemini CLI, and friends'
+  'Absurd but real market signals - standardpoorly.com',
+  'This wait could be sponsored. Your name here'
 ];
 const adWin = [[17.5, 20.4], [20.4, TERM_END - 0.2]];
 ads.forEach((adText, i) => text({
