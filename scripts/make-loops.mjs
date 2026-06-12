@@ -80,11 +80,13 @@ function bassNote(freq, slotMs, durS, vol, idx, parts, mixLabels) {
   fs.writeFileSync('scripts/_bass_filter.txt', parts.join(';'));
 }
 
-// --- v2 EDM bass: syncopated 16th riff (Justice-adjacent feel, our notes) ---
+// --- v2 EDM bass: syncopated 16th riff (Justice-adjacent feel, our notes).
+// OCTAVE UP from sub register: A2/C3/D3/E3/F3 — laptop speakers can't
+// reproduce 55Hz, and Justice bass lives in the midrange anyway. ---
 {
   const parts = [], labels = [];
-  // 16 slots of 125ms; 0 = rest. A1 / C2 / D2 / E2 / F2 movement
-  const RIFF = [55, 0, 55, 65.41, 0, 55, 55, 73.42, 55, 0, 55, 65.41, 87.31, 0, 82.41, 0];
+  // 16 slots of 125ms; 0 = rest
+  const RIFF = [110, 0, 110, 130.81, 0, 110, 110, 146.83, 110, 0, 110, 130.81, 174.61, 0, 164.81, 0];
   let n = 0;
   RIFF.forEach((f, i) => {
     if (f > 0) { bassNote(f, i * 125, 0.13, 0.55, n, parts, labels); n += 1; }

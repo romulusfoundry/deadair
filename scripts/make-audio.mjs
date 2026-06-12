@@ -61,19 +61,25 @@ parts.push(
 );
 labels.push('boomnoise');
 
-// --- typing clicks (during the drop's first bar) ---
-const STEP = 2; // 15-char command -> ~8 clicks
+// --- typing clicks: run 1 = the command, run 2 = the prompt (matches
+// make-video.mjs cmd2 typing at 15.7s) ---
+const RUNS = [
+  [TYPE_START, TYPE_DUR, CMD_LEN],
+  [15.7, 1.4, 45]
+];
 let ci = 0;
-for (let k = 0; k < CMD_LEN; k += STEP) {
-  const jitter = ((k * 7) % 3) * 8;
-  const ms = Math.round((TYPE_START + (k / CMD_LEN) * TYPE_DUR) * 1000) + jitter;
-  const v = (0.30 + (ci % 3) * 0.06).toFixed(2);
-  parts.push(
-    `anoisesrc=d=0.014:c=brown:a=0.5,highpass=f=700,lowpass=f=3200,` +
-    `afade=t=out:st=0.004:d=0.01,volume=${v},adelay=${ms}|${ms}[ck${ci}]`
-  );
-  labels.push(`ck${ci}`);
-  ci += 1;
+for (const [start, dur, len] of RUNS) {
+  for (let k = 0; k < len; k += 2) {
+    const jitter = ((k * 7) % 3) * 8;
+    const ms = Math.round((start + (k / len) * dur) * 1000) + jitter;
+    const v = (0.30 + (ci % 3) * 0.06).toFixed(2);
+    parts.push(
+      `anoisesrc=d=0.014:c=brown:a=0.5,highpass=f=700,lowpass=f=3200,` +
+      `afade=t=out:st=0.004:d=0.01,volume=${v},adelay=${ms}|${ms}[ck${ci}]`
+    );
+    labels.push(`ck${ci}`);
+    ci += 1;
+  }
 }
 
 // (CTA swell removed — it was another sustained sine; the groove carries

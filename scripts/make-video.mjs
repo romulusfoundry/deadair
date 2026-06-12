@@ -113,10 +113,11 @@ for (let k = 1; k <= cmd.length; k++) {
 // static prefix stays; agent word becomes its own animated layer
 text({ s: '$ deadair', x: 190, y: 260, size: 28, color: C.text, t0: T, t1: TERM_END, alpha: '1' });
 const AGENT_X = 190 + Math.round(10 * 16.5);
-const AGENTS = ['codex', 'gemini', 'copilot', 'aider', 'droid', 'opencode'];
-const CYCLE_END = 16.4; // cycling finishes BEFORE the spinner appears
-const SWAP = (CYCLE_END - T) / AGENTS.length; // 0.9s each
-const RAMP = 0.3, RISE = 26;
+// cycle ends back on codex (holds) so the typed prompt below addresses it
+const AGENTS = ['codex', 'gemini', 'copilot', 'aider', 'hermes', 'openclaw', 'codex'];
+const CYCLE_END = 15.5; // cycling finishes BEFORE the prompt types
+const SWAP = (CYCLE_END - T) / AGENTS.length; // ~0.64s each
+const RAMP = 0.25, RISE = 26;
 AGENTS.forEach((agent, i) => {
   const a = T + i * SWAP;
   const last = i === AGENTS.length - 1;
@@ -135,15 +136,26 @@ AGENTS.forEach((agent, i) => {
       `if(lt(t,${(b - RAMP).toFixed(2)}),1,(${b.toFixed(2)}-t)/${RAMP}))`;
   text({ s: agent, x: AGENT_X, y: yExpr, size: 28, color: C.cyan, t0: a, t1: b, alpha: aExpr });
 });
-// Beat 2: spinner + ad fade in AFTER the cycle resolves (16.8+)
-spinner(190, 345, 28, C.cyan, 16.8, TERM_END - 0.2);
+// Beat 2: a REAL prompt gets typed below the command (second typing run,
+// matching click track in the audio scripts: PROMPT_START/DUR/LEN)
+const cmd2 = '> Hey codex, fix whatever I broke in checkout';
+const typeStart2 = 15.7, typeDur2 = 1.4, dt2 = typeDur2 / cmd2.length;
+for (let k = 1; k <= cmd2.length; k++) {
+  const tk = typeStart2 + k * dt2;
+  const tkEnd = k === cmd2.length ? TERM_END : typeStart2 + (k + 1) * dt2;
+  text({ s: cmd2.slice(0, k), x: 190, y: 320, size: 24, color: C.text, t0: tk, t1: tkEnd, alpha: '1' });
+}
+
+// Beat 3: the thinking spinner + ad appear UNDER the prompt — the product,
+// demonstrated end to end (17.4+)
+spinner(190, 385, 26, C.cyan, 17.4, TERM_END - 0.2);
 const ads = [
   'This wait could be sponsored. Your logo here',
   'Works with Codex, Gemini CLI, and friends'
 ];
-const adWin = [[16.9, 20.0], [20.0, TERM_END - 0.2]];
+const adWin = [[17.5, 20.4], [20.4, TERM_END - 0.2]];
 ads.forEach((adText, i) => text({
-  s: adText, x: 225, y: 347, size: 22, color: C.dim, t0: adWin[i][0], t1: adWin[i][1], fade: 0.25
+  s: adText, x: 222, y: 387, size: 22, color: C.dim, t0: adWin[i][0], t1: adWin[i][1], fade: 0.25
 }));
 
 // Beat 3: the money reveals below, after the ad has registered (19.6+)
@@ -156,9 +168,9 @@ text({ s: 'of net ad revenue. The first 1,000 installs. Forever.', x: CENTER, y:
 text({ s: '50/50 after that.', x: CENTER, y: 750, size: 34, color: C.dim, t0: 20.7, t1: TERM_END });
 
 // ---------- Scene E: coverage (23.6 - 26.0) ----------
-text({ s: 'Codex. Gemini. Copilot.', x: CENTER, y: 430, size: 58, color: C.text, t0: 23.7, t1: 25.9 });
-text({ s: 'Aider. Droid. Opencode.', x: CENTER, y: 510, size: 58, color: C.text, t0: 23.9, t1: 25.9 });
-text({ s: 'And every other agent.', x: CENTER, y: 615, size: 44, color: C.cyan, t0: 24.3, t1: 25.9 });
+text({ s: 'Codex. Gemini. Copilot. Aider.', x: CENTER, y: 430, size: 52, color: C.text, t0: 23.7, t1: 25.9 });
+text({ s: 'Hermes. OpenClaw. Droid. Opencode.', x: CENTER, y: 505, size: 52, color: C.text, t0: 23.9, t1: 25.9 });
+text({ s: 'And every other agent.', x: CENTER, y: 610, size: 44, color: C.cyan, t0: 24.3, t1: 25.9 });
 
 // ---------- Scene F: CTA (26.1 - 29.0) ----------
 text({ s: 'install once:', x: CENTER, y: 415, size: 26, color: C.dim, t0: 26.3, t1: 28.8 });
