@@ -20,30 +20,34 @@ parts.push(`[2:a]volume=0.18,adelay=${DROP_MS}|${DROP_MS}[hat]`); labels.push('h
 
 // --- keys motif: the intro IS this. Vibrato = the expressive/rubato
 // movement; echo = room so it isn't dry; gentle lowpass tames the top.
+// NO sustained elements anywhere in the intro — short notes + space only.
 parts.push(
   '[3:a]vibrato=f=4.3:d=0.10,aecho=0.7:0.75:70|110:0.32|0.22,' +
   'lowpass=f=3800,volume=0.62[motif]'
 ); labels.push('motif');
 
-// --- drone: low connective tissue under the motif ---
-parts.push(`sine=frequency=55:duration=${DUR},volume=0.20[dr1]`);
-parts.push(`sine=frequency=110:duration=${DUR},volume=0.12[dr2]`);
-parts.push(`sine=frequency=164.81:duration=${DUR},volume=0.06[dr3]`);
-parts.push('[dr1][dr2][dr3]amix=inputs=3:normalize=0,tremolo=f=0.8:d=0.4,lowpass=f=900[drone]');
-labels.push('drone');
+// --- heartbeat: one soft sub thump per second. Tension from pulse and
+// silence, not from a pad. Runs until the build takes over. ---
+for (let s = 0; s <= 7; s++) {
+  const ms = s * 1000;
+  parts.push(
+    `sine=frequency=52:duration=0.16,volume=0.55,afade=t=in:d=0.005,` +
+    `afade=t=out:st=0.03:d=0.13,adelay=${ms}|${ms}[hb${s}]`
+  );
+  labels.push(`hb${s}`);
+}
 
-// --- two bell accents: warm stacks (inputs 4,5) in a BIG space ---
-parts.push('[4:a]vibrato=f=4.0:d=0.08,aecho=0.7:0.8:120|190:0.35|0.25,lowpass=f=4200,volume=0.30,adelay=3400|3400[bell0]');
-labels.push('bell0');
-parts.push('[5:a]vibrato=f=4.0:d=0.08,aecho=0.7:0.8:120|190:0.35|0.25,lowpass=f=4200,volume=0.30,adelay=7200|7200[bell1]');
-labels.push('bell1');
-
-// --- riser: filtered noise swelling from 8.2s into the drop ---
-parts.push(
-  `anoisesrc=d=2.0:c=pink:a=0.6,lowpass=f=2400,highpass=f=300,` +
-  `afade=t=in:st=0:d=1.9,volume=0.5,adelay=8200|8200[riser]`
-);
-labels.push('riser');
+// --- the build: heartbeat doubles, then doubles again — an accelerating
+// kick run into the drop (musical buildup, no noise/jet riser) ---
+const BUILD = [8200, 8700, 9200, 9450, 9700, 9825, 9950, 10075];
+BUILD.forEach((ms, i) => {
+  const v = (0.5 + i * 0.05).toFixed(2);
+  parts.push(
+    `sine=frequency=58:duration=0.13,volume=${v},afade=t=in:d=0.004,` +
+    `afade=t=out:st=0.025:d=0.1,adelay=${ms}|${ms}[bd${i}]`
+  );
+  labels.push(`bd${i}`);
+});
 
 // --- impact boom AT the drop: sub thump + short dark noise burst ---
 parts.push(
@@ -70,9 +74,8 @@ for (let k = 0; k < CMD_LEN; k += STEP) {
   ci += 1;
 }
 
-// --- swell into the CTA (~26.2s) ---
-parts.push(`sine=frequency=220:duration=2.2,volume=0.22,afade=t=in:d=1.8,adelay=24400|24400[swell]`);
-labels.push('swell');
+// (CTA swell removed — it was another sustained sine; the groove carries
+// the ending and the fade-out does the rest)
 
 // STATIC gain only — loudnorm is a dynamic normalizer and it flattens the
 // intro-vs-drop contrast that makes the structure work. GAIN_DB is set by
