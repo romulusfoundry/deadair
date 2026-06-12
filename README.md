@@ -4,7 +4,7 @@ Get paid to wait. Sponsored spinner lines for Codex, Gemini CLI, and every
 coding agent that isn't already taken.
 
 - `cli/` — the `deadair` npm package (`deadair codex`, `deadair gemini`)
-- `web/` — deadair.tech: landing page, sponsor page, and the API the CLI talks to
+- `web/` — deadair.online: landing page, sponsor page, and the API the CLI talks to
 
 ## How it works
 

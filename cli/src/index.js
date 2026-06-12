@@ -16,7 +16,7 @@ usage:
   deadair uninstall          restore Gemini settings and remove local data
 
 first 1,000 installs keep 75% of ad revenue, forever. everyone else: 50%.
-https://deadair.tech
+https://deadair.online
 `;
 
 async function status() {

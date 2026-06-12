@@ -11,8 +11,8 @@ const DEFAULTS = {
   registered: false,
   founder: false,
   founderNumber: null,
-  // swap to https://deadair.tech before npm publish once the domain is bought
-  apiBase: process.env.DEADAIR_API || 'https://deadair-six.vercel.app',
+  // swap to https://deadair.online before npm publish once the domain is bought
+  apiBase: process.env.DEADAIR_API || 'https://deadair.online',
   creatives: { fetchedAt: 0, items: [] },
   totals: { seconds: 0, sessions: 0 }
 };

@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 const DEMO_LINES = [
-  'This wait could be sponsored. Your logo here — deadair.tech',
-  'Get paid to wait. First 1,000 installs keep 75% forever — deadair.tech',
-  'Works with Codex, Gemini CLI, and friends — deadair.tech'
+  'This wait could be sponsored. Your logo here — deadair.online',
+  'Get paid to wait. First 1,000 installs keep 75% forever — deadair.online',
+  'Works with Codex, Gemini CLI, and friends — deadair.online'
 ];
 
 function LiveSpinner() {
