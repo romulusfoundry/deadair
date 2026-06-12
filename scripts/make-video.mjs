@@ -3,7 +3,7 @@
 // Font referenced by a colon-free relative path to dodge Windows escaping.
 import fs from 'node:fs';
 
-const W = 1080, H = 1080, FPS = 30, DUR = 26.5;
+const W = 1080, H = 1080, FPS = 30, DUR = 29.0;
 const FONT = 'scripts/cascadia.ttf';
 
 const C = {
@@ -60,7 +60,7 @@ text({ s: 'wait.', x: CENTER, y: 505, size: 110, color: C.amber, t0: 0, t1: 2.8,
 spinner(CENTER, 690, 52, C.cyan, 0, 2.8);
 
 // ---------- Scene B: explainer / before-after (3.0 - 9.8) ----------
-text({ s: 'Every spinner is dead air.', x: CENTER, y: 200, size: 56, color: C.text, t0: 3.3, t1: 9.6 });
+text({ s: 'Every wait is dead air.', x: CENTER, y: 200, size: 56, color: C.text, t0: 3.3, t1: 9.6 });
 // left card: a normal witty spinner phrase
 text({ s: 'YOUR SPINNER', x: 95, y: 340, size: 22, color: C.dim, t0: 3.9, t1: 9.6 });
 box(80, 380, 410, 120, C.panel, 3.9, 9.6);
@@ -78,8 +78,9 @@ text({ s: 'Your dead air is ad space.', x: CENTER, y: 620, size: 60, color: C.am
 
 // ---------- Scene C: real usage (9.8 - 14.3) ----------
 // Terminal sits in the upper half and STAYS while the payoff text lands
-// beneath it — the spinner ad keeps running through the money scene.
-const TERM_END = 18.6;
+// beneath it. STRICTLY SEQUENTIAL beats so the eye tracks one thing at a
+// time: type -> cycle agents -> spinner+ad appears -> money text reveals.
+const TERM_END = 23.4;
 box(150, 170, 780, 300, C.panel, 9.8, TERM_END);
 boxLine(150, 170, 780, 300, C.border, 2, 9.8, TERM_END);
 text({ s: 'deadair', x: 185, y: 195, size: 24, color: C.dim, t0: 9.9, t1: TERM_END });
@@ -98,47 +99,56 @@ for (let k = 1; k <= cmd.length; k++) {
 text({ s: '$ deadair', x: 190, y: 260, size: 28, color: C.text, t0: T, t1: TERM_END, alpha: '1' });
 const AGENT_X = 190 + Math.round(10 * 16.5);
 const AGENTS = ['codex', 'gemini', 'copilot', 'aider', 'droid', 'opencode'];
-const SWAP = (TERM_END - T) / AGENTS.length; // ~1.9s each
-const RAMP = 0.35, RISE = 26;
+const CYCLE_END = 16.4; // cycling finishes BEFORE the spinner appears
+const SWAP = (CYCLE_END - T) / AGENTS.length; // 0.9s each
+const RAMP = 0.3, RISE = 26;
 AGENTS.forEach((agent, i) => {
-  const a = T + i * SWAP, b = T + (i + 1) * SWAP;
+  const a = T + i * SWAP;
+  const last = i === AGENTS.length - 1;
+  const b = last ? TERM_END : T + (i + 1) * SWAP;
   const enter = i === 0 ? 0.01 : RAMP; // first word was just typed — no entry
-  // enter: rise from below + fade in; exit: keep rising out + fade away
-  const yExpr = `if(lt(t,${(a + enter).toFixed(2)}),260+${RISE}*(1-(t-${a.toFixed(2)})/${enter}),` +
-    `if(lt(t,${(b - RAMP).toFixed(2)}),260,260-${RISE}*(t-${(b - RAMP).toFixed(2)})/${RAMP}))`;
-  const aExpr = `if(lt(t,${(a + enter).toFixed(2)}),(t-${a.toFixed(2)})/${enter},` +
-    `if(lt(t,${(b - RAMP).toFixed(2)}),1,(${b.toFixed(2)}-t)/${RAMP}))`;
+  // enter: rise from below + fade in; exit: keep rising out + fade away.
+  // Last agent LANDS and holds — the cycle resolves before the next beat.
+  const yEnter = `260+${RISE}*(1-(t-${a.toFixed(2)})/${enter})`;
+  const yExpr = last
+    ? `if(lt(t,${(a + enter).toFixed(2)}),${yEnter},260)`
+    : `if(lt(t,${(a + enter).toFixed(2)}),${yEnter},` +
+      `if(lt(t,${(b - RAMP).toFixed(2)}),260,260-${RISE}*(t-${(b - RAMP).toFixed(2)})/${RAMP}))`;
+  const aExpr = last
+    ? `if(lt(t,${(a + enter).toFixed(2)}),(t-${a.toFixed(2)})/${enter},1)`
+    : `if(lt(t,${(a + enter).toFixed(2)}),(t-${a.toFixed(2)})/${enter},` +
+      `if(lt(t,${(b - RAMP).toFixed(2)}),1,(${b.toFixed(2)}-t)/${RAMP}))`;
   text({ s: agent, x: AGENT_X, y: yExpr, size: 28, color: C.cyan, t0: a, t1: b, alpha: aExpr });
 });
-spinner(190, 345, 28, C.cyan, 11.7, TERM_END - 0.2);
+// Beat 2: spinner + ad fade in AFTER the cycle resolves (16.8+)
+spinner(190, 345, 28, C.cyan, 16.8, TERM_END - 0.2);
 const ads = [
   'This wait could be sponsored. Your logo here',
-  'Works with Codex, Gemini CLI, and friends',
-  'This wait could be sponsored. Your logo here'
+  'Works with Codex, Gemini CLI, and friends'
 ];
-const adWin = [[11.8, 13.6], [13.6, 16.0], [16.0, TERM_END - 0.2]];
+const adWin = [[16.9, 20.0], [20.0, TERM_END - 0.2]];
 ads.forEach((adText, i) => text({
-  s: adText, x: 225, y: 347, size: 22, color: C.dim, t0: adWin[i][0], t1: adWin[i][1], fade: 0.22
+  s: adText, x: 225, y: 347, size: 22, color: C.dim, t0: adWin[i][0], t1: adWin[i][1], fade: 0.25
 }));
 
-// ---------- Scene D: the money, BELOW the still-running terminal (13.8 - 18.6) ----------
-text({ s: 'And you keep 75%', x: CENTER, y: 560, size: 84, color: C.amber, t0: 13.8, t1: TERM_END });
-text({ s: 'of net ad revenue. The first 1,000 installs. Forever.', x: CENTER, y: 690, size: 34, color: C.text, t0: 14.4, t1: TERM_END });
-text({ s: '50/50 after that.', x: CENTER, y: 750, size: 34, color: C.dim, t0: 14.9, t1: TERM_END });
+// Beat 3: the money reveals below, after the ad has registered (19.6+)
+text({ s: 'And you keep 75%', x: CENTER, y: 560, size: 84, color: C.amber, t0: 19.6, t1: TERM_END });
+text({ s: 'of net ad revenue. The first 1,000 installs. Forever.', x: CENTER, y: 690, size: 34, color: C.text, t0: 20.2, t1: TERM_END });
+text({ s: '50/50 after that.', x: CENTER, y: 750, size: 34, color: C.dim, t0: 20.7, t1: TERM_END });
 
-// ---------- Scene E: coverage (18.8 - 21.4) ----------
-text({ s: 'Codex. Gemini. Copilot.', x: CENTER, y: 430, size: 58, color: C.text, t0: 18.9, t1: 21.3 });
-text({ s: 'Aider. Droid. Opencode.', x: CENTER, y: 510, size: 58, color: C.text, t0: 19.1, t1: 21.3 });
-text({ s: 'And every other agent.', x: CENTER, y: 615, size: 44, color: C.cyan, t0: 19.5, t1: 21.3 });
+// ---------- Scene E: coverage (23.6 - 26.0) ----------
+text({ s: 'Codex. Gemini. Copilot.', x: CENTER, y: 430, size: 58, color: C.text, t0: 23.7, t1: 25.9 });
+text({ s: 'Aider. Droid. Opencode.', x: CENTER, y: 510, size: 58, color: C.text, t0: 23.9, t1: 25.9 });
+text({ s: 'And every other agent.', x: CENTER, y: 615, size: 44, color: C.cyan, t0: 24.3, t1: 25.9 });
 
-// ---------- Scene F: CTA (21.5 - 26.5) ----------
-text({ s: 'install once:', x: CENTER, y: 415, size: 26, color: C.dim, t0: 21.8, t1: 26.3 });
-box(220, 455, 640, 96, C.panel, 21.7, 26.3);
-boxLine(220, 455, 640, 96, C.border, 2, 21.7, 26.3);
-text({ s: '$ npm i -g deadair', x: CENTER, y: 483, size: 46, color: C.cyan, t0: 21.9, t1: 26.3 });
-text({ s: 'then: deadair codex · deadair gemini · deadair run anything', x: CENTER, y: 580, size: 24, color: C.dim, t0: 22.3, t1: 26.3 });
-text({ s: 'deadair.online', x: CENTER, y: 645, size: 42, color: C.amber, t0: 22.5, t1: 26.3 });
-text({ s: 'sell your dead air', x: CENTER, y: 720, size: 32, color: C.dim, t0: 22.9, t1: 26.3 });
+// ---------- Scene F: CTA (26.1 - 29.0) ----------
+text({ s: 'install once:', x: CENTER, y: 415, size: 26, color: C.dim, t0: 26.3, t1: 28.8 });
+box(220, 455, 640, 96, C.panel, 26.2, 28.8);
+boxLine(220, 455, 640, 96, C.border, 2, 26.2, 28.8);
+text({ s: '$ npm i -g deadair', x: CENTER, y: 483, size: 46, color: C.cyan, t0: 26.4, t1: 28.8 });
+text({ s: 'then: deadair codex · deadair gemini · deadair run anything', x: CENTER, y: 580, size: 24, color: C.dim, t0: 26.8, t1: 28.8 });
+text({ s: 'deadair.online', x: CENTER, y: 645, size: 42, color: C.amber, t0: 27.0, t1: 28.8 });
+text({ s: 'sell your dead air', x: CENTER, y: 720, size: 32, color: C.dim, t0: 27.3, t1: 28.8 });
 
 const head = `color=c=${C.bg}:s=${W}x${H}:d=${DUR}:r=${FPS}[bg];`;
 const script = head + chain.join(';') + `;[v${n}]format=yuv420p[vout]`;
