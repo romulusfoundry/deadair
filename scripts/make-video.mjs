@@ -81,7 +81,7 @@ text({ s: '→', x: 512, y: 410, size: 60, color: C.cyan, t0: 4.4, t1: 9.6 });
 text({ s: 'WITH DEADAIR', x: 605, y: 340, size: 22, color: C.cyan, t0: 4.6, t1: 9.6 });
 box(590, 380, 410, 120, C.panel, 4.6, 9.6);
 boxLine(590, 380, 410, 120, C.cyan, 2, 4.6, 9.6);
-text({ s: '⠹ your product here', x: 615, y: 428, size: 23, color: C.cyan, t0: 4.8, t1: 9.6 });
+text({ s: '⠹ This can be monetized - by you', x: 606, y: 430, size: 20, color: C.cyan, t0: 4.8, t1: 9.6 });
 // tagline reveal
 text({ s: 'Your dead air is ad space.', x: CENTER, y: 620, size: 60, color: C.amber, t0: 6.4, t1: 9.6 });
 
