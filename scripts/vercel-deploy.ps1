@@ -8,6 +8,13 @@ function Get-EnvValue($path, $key) {
   return ($line -replace "^$key=", '').Trim()
 }
 
+function Get-EnvValueOpt($path, $key) {
+  if (-not (Test-Path $path)) { return $null }
+  $line = (Get-Content $path) | Where-Object { $_ -match "^$key=" } | Select-Object -First 1
+  if (-not $line) { return $null }
+  return ($line -replace "^$key=", '').Trim()
+}
+
 $ws = 'C:\Users\muckr\.openclaw\workspace'
 $webDir = "$ws\deadair\web"
 $token = Get-EnvValue "$ws\.env" 'VERCEL_TOKEN'
@@ -27,11 +34,24 @@ try {
   Write-Output "project created: $($project.id)"
 }
 
-# 2. Env vars (upsert)
-$envBody = ConvertTo-Json @(
+# 2. Env vars (upsert). Stripe vars are optional — only pushed once present in
+#    deadair/.env.local, so deploys work before Stripe is configured.
+$envVars = @(
   @{ key = 'NEXT_PUBLIC_SUPABASE_URL'; value = $supaUrl; type = 'encrypted'; target = @('production','preview') },
   @{ key = 'SUPABASE_SERVICE_ROLE_KEY'; value = $supaKey; type = 'encrypted'; target = @('production','preview') }
-) -Depth 4
+)
+$stripeEnv = "$ws\deadair\.env.local"
+$payLink = Get-EnvValueOpt $stripeEnv 'NEXT_PUBLIC_STRIPE_PAYMENT_LINK'
+$webhookSecret = Get-EnvValueOpt $stripeEnv 'STRIPE_WEBHOOK_SECRET'
+if ($payLink) {
+  $envVars += @{ key = 'NEXT_PUBLIC_STRIPE_PAYMENT_LINK'; value = $payLink; type = 'plain'; target = @('production','preview') }
+  Write-Output 'stripe payment link found -> pushing'
+}
+if ($webhookSecret) {
+  $envVars += @{ key = 'STRIPE_WEBHOOK_SECRET'; value = $webhookSecret; type = 'encrypted'; target = @('production','preview') }
+  Write-Output 'stripe webhook secret found -> pushing'
+}
+$envBody = ConvertTo-Json $envVars -Depth 4
 Invoke-RestMethod -Method Post -Uri "https://api.vercel.com/v10/projects/deadair/env?teamId=$team&upsert=true" -Headers $headers -Body $envBody | Out-Null
 Write-Output 'env vars upserted'
 
