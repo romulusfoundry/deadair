@@ -13,14 +13,17 @@ const DROP_MS = 10200; // the drop = the moment the product appears
 const parts = [];
 const labels = [];
 
-// --- rhythm section: silent until the drop ---
-parts.push(`[0:a]volume=0.52,adelay=${DROP_MS}|${DROP_MS}[arp]`); labels.push('arp');
+// --- rhythm section: silent until the drop. Arp gets chorus for width. ---
+parts.push(`[0:a]chorus=0.6:0.9:50|62:0.35|0.3:0.25|0.4:1.8|2.2,volume=0.52,adelay=${DROP_MS}|${DROP_MS}[arp]`); labels.push('arp');
 parts.push(`[1:a]volume=0.48,adelay=${DROP_MS}|${DROP_MS}[pulse]`); labels.push('pulse');
 parts.push(`[2:a]volume=0.18,adelay=${DROP_MS}|${DROP_MS}[hat]`); labels.push('hat');
 
-// --- keys motif: the intro IS this — warm circling phrase looping from
-// frame one (Kid A-shaped presence, original notes), continues under the drop
-parts.push('[3:a]volume=0.55[motif]'); labels.push('motif');
+// --- keys motif: the intro IS this. Vibrato = the expressive/rubato
+// movement; echo = room so it isn't dry; gentle lowpass tames the top.
+parts.push(
+  '[3:a]vibrato=f=4.3:d=0.10,aecho=0.7:0.75:70|110:0.32|0.22,' +
+  'lowpass=f=3800,volume=0.62[motif]'
+); labels.push('motif');
 
 // --- drone: low connective tissue under the motif ---
 parts.push(`sine=frequency=55:duration=${DUR},volume=0.20[dr1]`);
@@ -29,15 +32,11 @@ parts.push(`sine=frequency=164.81:duration=${DUR},volume=0.06[dr3]`);
 parts.push('[dr1][dr2][dr3]amix=inputs=3:normalize=0,tremolo=f=0.8:d=0.4,lowpass=f=900[drone]');
 labels.push('drone');
 
-// --- two lonely high bells as accents over the motif ---
-const BELLS = [[3400, 880], [7200, 659.25]];
-BELLS.forEach(([ms, hz], i) => {
-  parts.push(
-    `sine=frequency=${hz}:duration=1.8,volume=0.12,afade=t=in:d=0.02,` +
-    `afade=t=out:st=0.1:d=1.7,adelay=${ms}|${ms}[bell${i}]`
-  );
-  labels.push(`bell${i}`);
-});
+// --- two bell accents: warm stacks (inputs 4,5) in a BIG space ---
+parts.push('[4:a]vibrato=f=4.0:d=0.08,aecho=0.7:0.8:120|190:0.35|0.25,lowpass=f=4200,volume=0.30,adelay=3400|3400[bell0]');
+labels.push('bell0');
+parts.push('[5:a]vibrato=f=4.0:d=0.08,aecho=0.7:0.8:120|190:0.35|0.25,lowpass=f=4200,volume=0.30,adelay=7200|7200[bell1]');
+labels.push('bell1');
 
 // --- riser: filtered noise swelling from 8.2s into the drop ---
 parts.push(

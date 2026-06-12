@@ -1,20 +1,28 @@
 // Generates filtergraphs for the trailer's musical loops. Original material —
-// Kid A-ADJACENT character (warm circling keys motif, dark moving arpeggio)
-// with our own notes, so nothing is licensable by anyone else.
+// Kid A-ADJACENT character with our own notes. Notes are FAT UNISON STACKS
+// (fundamental + 3-cent detune + octave + twelfth) with humanized timing, so
+// nothing sounds like a naked sine. Expression (vibrato/chorus/echo) is
+// applied at the bed level in make-audio.mjs.
 import fs from 'node:fs';
 
-// warm two-partial "keys" note: fundamental + octave harmonic, pluck envelope
+// warm 4-partial "keys" note with slight timing humanization
 function note(freq, slotMs, durS, vol, idx, parts, mixLabels) {
   const d = durS.toFixed(3);
-  parts.push(
-    `sine=frequency=${freq}:duration=${d},volume=${vol},afade=t=in:d=0.012,` +
-    `afade=t=out:st=${(durS * 0.3).toFixed(3)}:d=${(durS * 0.7).toFixed(3)},adelay=${slotMs}|${slotMs}[f${idx}]`
-  );
-  parts.push(
-    `sine=frequency=${(freq * 2).toFixed(2)}:duration=${d},volume=${(vol * 0.30).toFixed(2)},afade=t=in:d=0.012,` +
-    `afade=t=out:st=${(durS * 0.25).toFixed(3)}:d=${(durS * 0.75).toFixed(3)},adelay=${slotMs}|${slotMs}[h${idx}]`
-  );
-  mixLabels.push(`f${idx}`, `h${idx}`);
+  const jitter = ((idx * 11) % 5) * 4 - 8; // -8..+8ms deterministic push/pull
+  const ms = Math.max(0, slotMs + jitter);
+  const partials = [
+    [freq, vol],                 // fundamental
+    [freq * 1.003, vol * 0.55],  // detuned unison — width/beating warmth
+    [freq * 2, vol * 0.30],      // octave
+    [freq * 3, vol * 0.10]       // twelfth — presence without shrill
+  ];
+  partials.forEach(([f, v], p) => {
+    parts.push(
+      `sine=frequency=${f.toFixed(2)}:duration=${d},volume=${v.toFixed(3)},afade=t=in:d=0.015,` +
+      `afade=t=out:st=${(durS * 0.25).toFixed(3)}:d=${(durS * 0.75).toFixed(3)},adelay=${ms}|${ms}[n${idx}p${p}]`
+    );
+    mixLabels.push(`n${idx}p${p}`);
+  });
 }
 
 // --- intro motif: 2.0s loop, 8 circling eighth-notes, melancholic + modal ---
@@ -22,7 +30,7 @@ function note(freq, slotMs, durS, vol, idx, parts, mixLabels) {
 const MOTIF = [329.63, 392.0, 293.66, 349.23, 261.63, 329.63, 246.94, 293.66];
 {
   const parts = [], labels = [];
-  MOTIF.forEach((f, i) => note(f, i * 250, 0.32, 0.5, i, parts, labels));
+  MOTIF.forEach((f, i) => note(f, i * 250, 0.42, 0.5, i, parts, labels));
   parts.push(`[${labels.join('][')}]amix=inputs=${labels.length}:normalize=0,apad=whole_dur=2.0[out]`);
   fs.writeFileSync('scripts/_motif_filter.txt', parts.join(';'));
 }
@@ -34,9 +42,19 @@ const ARP = [
 ];
 {
   const parts = [], labels = [];
-  ARP.forEach((f, i) => note(f, i * 125, 0.16, 0.55, i, parts, labels));
+  ARP.forEach((f, i) => note(f, i * 125, 0.18, 0.55, i, parts, labels));
   parts.push(`[${labels.join('][')}]amix=inputs=${labels.length}:normalize=0,apad=whole_dur=2.0[out]`);
   fs.writeFileSync('scripts/_arp_filter.txt', parts.join(';'));
 }
 
-console.log('wrote motif (8-note circling phrase) + arp (Am->F, 16 notes) filtergraphs');
+// --- bell accents: same warm stack, higher register, LONG decay (one-shots) ---
+// A5 and E5, 2.2s ring-out
+const BELLS = [[880, '_bell1_filter.txt'], [659.25, '_bell2_filter.txt']];
+BELLS.forEach(([f, file]) => {
+  const parts = [], labels = [];
+  note(f, 0, 2.2, 0.5, 0, parts, labels);
+  parts.push(`[${labels.join('][')}]amix=inputs=${labels.length}:normalize=0,apad=whole_dur=2.4[out]`);
+  fs.writeFileSync(`scripts/${file}`, parts.join(';'));
+});
+
+console.log('wrote motif + arp + 2 bell filtergraphs (4-partial stacks, humanized)');
