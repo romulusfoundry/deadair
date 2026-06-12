@@ -1,4 +1,4 @@
-import { formatLine, pickRotation } from './creatives.js';
+import { formatLine, pickRotation, linkify } from './creatives.js';
 
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 const DIM = '\x1b[2m';
@@ -62,12 +62,13 @@ export class AdSpinner {
       this.lastRotate = Date.now();
     }
     const frame = FRAMES[this.frame = (this.frame + 1) % FRAMES.length];
-    const line = formatLine(this.rotation[this.creativeIndex]);
+    const creative = this.rotation[this.creativeIndex];
     const width = this.stream.columns || 80;
-    const text = `${CYAN}${frame}${RESET} ${DIM}${line}${RESET}`;
-    // Truncate to terminal width to avoid wrap artifacts (ANSI codes excluded
-    // from the budget loosely; 12 covers the escapes above).
-    this.stream.write(CLEAR_LINE + text.slice(0, width + 12));
+    // truncate the VISIBLE text first, then hyperlink-wrap — slicing after
+    // wrapping would cut OSC-8 escapes in half and garble the terminal
+    const visible = formatLine(creative).slice(0, Math.max(10, width - 4));
+    const linked = linkify(creative, visible, 'codex-exec');
+    this.stream.write(`${CLEAR_LINE}${CYAN}${frame}${RESET} ${DIM}${linked}${RESET}`);
     this.visible = true;
   }
 

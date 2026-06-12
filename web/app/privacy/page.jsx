@@ -10,6 +10,7 @@ export default function Privacy() {
       <ol className="how">
         <li>A random install ID (a UUID we generate — not derived from your machine, name, or anything identifying).</li>
         <li>Session telemetry: which agent ran (e.g. codex, gemini), session duration in seconds, which ad was in rotation and for how long, your OS platform, and a two-letter country code derived from your IP at request time. <strong>The IP itself is not stored.</strong></li>
+        <li>If you click a sponsored line (they're terminal hyperlinks), the redirect logs which ad was clicked, the surface, your country code, and your install ID before forwarding you to the sponsor. Don't click, nothing is logged.</li>
         <li>That is the entire list. The CLI never reads or transmits your prompts, your code, your file paths, your command arguments, or your agent's output.</li>
       </ol>
 

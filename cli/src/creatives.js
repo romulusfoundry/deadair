@@ -1,3 +1,5 @@
+import { loadConfig } from './config.js';
+
 // House lines shown when no sponsor inventory is available (offline, or
 // unsold slots). A blank slot reads as a dead network — never show nothing.
 export const HOUSE_LINES = [
@@ -34,6 +36,18 @@ export function formatLine(creative) {
   // " - " separator is intentionally ASCII (em-dash is non-ASCII and would be
   // stripped); keeps the rendered line in pure-ASCII territory for width math.
   return name ? `${text} - ${name}` : text;
+}
+
+// OSC 8 hyperlink wrap: makes the ad line CLICKABLE in modern terminals
+// (Windows Terminal, iTerm2, VS Code, WezTerm...). The link goes through our
+// /c/ redirect, which logs the click (CTR per creative) then forwards to the
+// sponsor. We add these escapes AROUND already-sanitized text at render time —
+// advertiser text itself can never contain escapes (sanitizer strips them).
+export function linkify(creative, visibleText, surface) {
+  if (!creative?.id) return visibleText; // offline house lines: plain text
+  const cfg = loadConfig();
+  const url = `${cfg.apiBase}/c/${creative.id}?s=${surface}&i=${cfg.installId}`;
+  return `\x1b]8;;${url}\x1b\\${visibleText}\x1b]8;;\x1b\\`;
 }
 
 export function pickRotation(creatives) {

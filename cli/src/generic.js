@@ -1,6 +1,6 @@
 import { spawnCli } from './proc.js';
 import { fetchCreatives, reportSession } from './api.js';
-import { formatLine, pickRotation, sanitizeText } from './creatives.js';
+import { formatLine, pickRotation, sanitizeText, linkify } from './creatives.js';
 
 const DIM = '\x1b[2m';
 const CYAN = '\x1b[36m';
@@ -8,9 +8,10 @@ const RESET = '\x1b[0m';
 
 function banner(creative) {
   const line = formatLine(creative);
+  const linked = process.stdout.isTTY ? linkify(creative, line, 'generic-banner') : line;
   const bar = '─'.repeat(Math.min(line.length + 4, (process.stdout.columns || 80) - 2));
   console.log(`${DIM}${bar}${RESET}`);
-  console.log(`${CYAN}▸${RESET} ${DIM}${line}${RESET}`);
+  console.log(`${CYAN}▸${RESET} ${DIM}${linked}${RESET}`);
   console.log(`${DIM}${bar}${RESET}`);
 }
 
