@@ -16,7 +16,8 @@ export default function Terms() {
 
       <h2>earnings program</h2>
       <ol className="how">
-        <li>Your share accrues pro-rata by verified wait-time, computed on net ad revenue (gross sponsor payments minus payment and payout processing costs). Founder installs (first 1,000) accrue at 75%, all others at 50%.</li>
+        <li>Your share accrues pro-rata by verified ad delivery, computed on net ad revenue (gross sponsor payments minus payment and payout processing costs). Founder installs (first 1,000) accrue at 75%, all others at 50%.</li>
+        <li>Accrual is weighted by what was actually displayed: surfaces where an ad renders in the spinner (Codex exec, Gemini CLI) accrue by rendered wait-time; banner surfaces (any agent wrapped via <code>deadair &lt;agent&gt;</code>) accrue per banner impression and per click only. Session time during which no ad is displayed does not accrue revenue share.</li>
         <li>Accrued balances are promotional rewards, not wages, deposits, or interest-bearing accounts. Earnings are not guaranteed; if there is no sponsor revenue, balances are $0.</li>
         <li>Cashing out requires linking a verified email to your install. Minimum payout is $25, fulfilled via gift card or prepaid card through a third-party payout provider.</li>
         <li>Linked balances over $250 or idle for 12 months may be paid out automatically. Balances on installs that were never linked and have been inactive for 12 months are returned to the community revenue pool.</li>

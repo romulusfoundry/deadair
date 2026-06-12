@@ -147,9 +147,9 @@ box(220, 340, 640, 96, C.panel, 23.8 + OFF, E_END);
 boxLine(220, 340, 640, 96, C.border, 2, 23.8 + OFF, E_END);
 text({ s: '$ npm i -g deadair', x: CENTER, y: 368, size: 46, color: C.cyan, t0: 24.0 + OFF, t1: E_END });
 text({ s: 'then run yours:', x: CENTER, y: 495, size: 24, color: C.dim, t0: 24.4 + OFF, t1: E_END });
-text({ s: 'Codex · Gemini · Copilot · Aider · Hermes', x: CENTER, y: 548, size: 34, color: C.text, t0: 24.6 + OFF, t1: E_END });
-text({ s: 'OpenClaw · Droid · Opencode · Cursor · Goose', x: CENTER, y: 603, size: 34, color: C.text, t0: 24.8 + OFF, t1: E_END });
-text({ s: 'and every other agent: deadair anything', x: CENTER, y: 678, size: 36, color: C.cyan, t0: 25.3 + OFF, t1: E_END });
+text({ s: 'spinner ads today: Codex · Gemini CLI', x: CENTER, y: 548, size: 34, color: C.text, t0: 24.6 + OFF, t1: E_END });
+text({ s: 'every other agent: sponsored banners', x: CENTER, y: 603, size: 34, color: C.text, t0: 24.8 + OFF, t1: E_END });
+text({ s: 'wrap anything: deadair <agent>', x: CENTER, y: 678, size: 36, color: C.cyan, t0: 25.3 + OFF, t1: E_END });
 text({ s: 'deadair.online', x: CENTER, y: 755, size: 44, color: C.amber, t0: 25.8 + OFF, t1: E_END });
 text({ s: 'sell your dead air', x: CENTER, y: 825, size: 30, color: C.dim, t0: 26.1 + OFF, t1: E_END });
 
