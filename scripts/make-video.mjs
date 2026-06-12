@@ -3,7 +3,7 @@
 // Font referenced by a colon-free relative path to dodge Windows escaping.
 import fs from 'node:fs';
 
-const W = 1080, H = 1080, FPS = 30, DUR = 25.5;
+const W = 1080, H = 1080, FPS = 30, DUR = 26.5;
 const FONT = 'scripts/cascadia.ttf';
 
 const C = {
@@ -72,46 +72,50 @@ text({ s: '⠹ your product here', x: 615, y: 428, size: 23, color: C.cyan, t0: 
 text({ s: 'Your dead air is ad space.', x: CENTER, y: 620, size: 60, color: C.amber, t0: 6.4, t1: 9.6 });
 
 // ---------- Scene C: real usage (9.8 - 14.3) ----------
-box(150, 400, 780, 300, C.panel, 9.8, 14.3);
-boxLine(150, 400, 780, 300, C.border, 2, 9.8, 14.3);
-text({ s: 'deadair', x: 185, y: 425, size: 24, color: C.dim, t0: 9.9, t1: 14.3 });
+// Terminal sits in the upper half and STAYS while the payoff text lands
+// beneath it — the spinner ad keeps running through the money scene.
+const TERM_END = 18.6;
+box(150, 170, 780, 300, C.panel, 9.8, TERM_END);
+boxLine(150, 170, 780, 300, C.border, 2, 9.8, TERM_END);
+text({ s: 'deadair', x: 185, y: 195, size: 24, color: C.dim, t0: 9.9, t1: TERM_END });
 const cmd = '$ deadair codex exec "fix the failing tests"';
 const typeStart = 10.2, typeDur = 1.3, dt = typeDur / cmd.length;
 for (let k = 1; k <= cmd.length; k++) {
   const tk = typeStart + k * dt;
-  const tkEnd = k === cmd.length ? 14.3 : typeStart + (k + 1) * dt;
-  text({ s: cmd.slice(0, k), x: 190, y: 490, size: 28, color: C.text, t0: tk, t1: tkEnd, alpha: '1' });
+  const tkEnd = k === cmd.length ? TERM_END : typeStart + (k + 1) * dt;
+  text({ s: cmd.slice(0, k), x: 190, y: 260, size: 28, color: C.text, t0: tk, t1: tkEnd, alpha: '1' });
 }
 const cursorX = 190 + Math.round(cmd.length * 16.5);
 text({
-  s: '█', x: cursorX, y: 490, size: 28, color: C.cyan, t0: typeStart + typeDur, t1: 14.3,
+  s: '█', x: cursorX, y: 260, size: 28, color: C.cyan, t0: typeStart + typeDur, t1: TERM_END,
   alpha: `if(gt(t,${(typeStart + typeDur).toFixed(2)}),mod(floor(t*2),2),0)`
 });
-spinner(190, 575, 28, C.cyan, 11.7, 14.1);
+spinner(190, 345, 28, C.cyan, 11.7, TERM_END - 0.2);
 const ads = [
   'This wait could be sponsored. Your logo here',
-  'Works with Codex, Gemini CLI, and friends'
+  'Works with Codex, Gemini CLI, and friends',
+  'This wait could be sponsored. Your logo here'
 ];
-const adWin = [[11.8, 13.0], [13.0, 14.1]];
+const adWin = [[11.8, 13.6], [13.6, 16.0], [16.0, TERM_END - 0.2]];
 ads.forEach((adText, i) => text({
-  s: adText, x: 225, y: 577, size: 22, color: C.dim, t0: adWin[i][0], t1: adWin[i][1], fade: 0.22
+  s: adText, x: 225, y: 347, size: 22, color: C.dim, t0: adWin[i][0], t1: adWin[i][1], fade: 0.22
 }));
 
-// ---------- Scene D: the money (14.3 - 18.0) ----------
-text({ s: 'And you keep 75%.', x: CENTER, y: 425, size: 92, color: C.amber, t0: 14.6, t1: 17.8 });
-text({ s: 'The first 1,000 installs.', x: CENTER, y: 560, size: 42, color: C.text, t0: 15.0, t1: 17.8 });
-text({ s: 'Forever.', x: CENTER, y: 625, size: 42, color: C.dim, t0: 15.4, t1: 17.8 });
+// ---------- Scene D: the money, BELOW the still-running terminal (13.8 - 18.6) ----------
+text({ s: 'And you keep 75%', x: CENTER, y: 560, size: 84, color: C.amber, t0: 13.8, t1: TERM_END });
+text({ s: 'of net ad revenue. The first 1,000 installs. Forever.', x: CENTER, y: 690, size: 34, color: C.text, t0: 14.4, t1: TERM_END });
+text({ s: '50/50 after that.', x: CENTER, y: 750, size: 34, color: C.dim, t0: 14.9, t1: TERM_END });
 
-// ---------- Scene E: coverage (18.0 - 20.8) ----------
-text({ s: 'Codex. Gemini CLI.', x: CENTER, y: 455, size: 66, color: C.text, t0: 18.2, t1: 20.6 });
-text({ s: 'And every other agent.', x: CENTER, y: 560, size: 44, color: C.cyan, t0: 18.6, t1: 20.6 });
+// ---------- Scene E: coverage (18.8 - 21.4) ----------
+text({ s: 'Codex. Gemini CLI.', x: CENTER, y: 455, size: 66, color: C.text, t0: 18.9, t1: 21.3 });
+text({ s: 'And every other agent.', x: CENTER, y: 560, size: 44, color: C.cyan, t0: 19.3, t1: 21.3 });
 
-// ---------- Scene F: CTA (20.8 - 25.5) ----------
-box(220, 455, 640, 96, C.panel, 21.0, 25.3);
-boxLine(220, 455, 640, 96, C.border, 2, 21.0, 25.3);
-text({ s: '$ npm i -g deadair', x: CENTER, y: 483, size: 46, color: C.cyan, t0: 21.2, t1: 25.3 });
-text({ s: 'deadair.online', x: CENTER, y: 600, size: 42, color: C.amber, t0: 21.6, t1: 25.3 });
-text({ s: 'sell your dead air', x: CENTER, y: 680, size: 32, color: C.dim, t0: 22.0, t1: 25.3 });
+// ---------- Scene F: CTA (21.5 - 26.5) ----------
+box(220, 455, 640, 96, C.panel, 21.7, 26.3);
+boxLine(220, 455, 640, 96, C.border, 2, 21.7, 26.3);
+text({ s: '$ npm i -g deadair', x: CENTER, y: 483, size: 46, color: C.cyan, t0: 21.9, t1: 26.3 });
+text({ s: 'deadair.online', x: CENTER, y: 600, size: 42, color: C.amber, t0: 22.3, t1: 26.3 });
+text({ s: 'sell your dead air', x: CENTER, y: 680, size: 32, color: C.dim, t0: 22.7, t1: 26.3 });
 
 const head = `color=c=${C.bg}:s=${W}x${H}:d=${DUR}:r=${FPS}[bg];`;
 const script = head + chain.join(';') + `;[v${n}]format=yuv420p[vout]`;

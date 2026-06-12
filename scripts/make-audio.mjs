@@ -5,15 +5,15 @@
 //   [1:a] = _pulse.wav (looped soft kick)
 import fs from 'node:fs';
 
-const DUR = 25.5;
+const DUR = 26.5;
 // must match make-video.mjs scene C: cmd len 44, typing 10.2 -> 11.5
 const CMD_LEN = 44, TYPE_START = 10.2, TYPE_DUR = 1.3;
 
 const parts = [];
 const labels = [];
 
-parts.push('[0:a]volume=0.33[arp]'); labels.push('arp');
-parts.push('[1:a]volume=0.30[pulse]'); labels.push('pulse');
+parts.push('[0:a]volume=0.45[arp]'); labels.push('arp');
+parts.push('[1:a]volume=0.40[pulse]'); labels.push('pulse');
 
 // low drone: A1 + A2 + E3, slow tremolo
 parts.push(`sine=frequency=55:duration=${DUR},volume=0.30[dr1]`);
@@ -39,13 +39,13 @@ for (let k = 0; k < CMD_LEN; k += STEP) {
   ci += 1;
 }
 
-// swell into the CTA (~21s)
-parts.push(`sine=frequency=220:duration=2.2,volume=0.2,afade=t=in:d=1.8,adelay=19200|19200[swell]`);
+// swell into the CTA (~21.7s)
+parts.push(`sine=frequency=220:duration=2.2,volume=0.22,afade=t=in:d=1.8,adelay=19900|19900[swell]`);
 labels.push('swell');
 
 const mix = `[${labels.join('][')}]amix=inputs=${labels.length}:normalize=0,` +
   `afade=t=in:st=0:d=1.6,afade=t=out:st=${(DUR - 1.8).toFixed(1)}:d=1.8,` +
-  `loudnorm=I=-15:TP=-1.5:LRA=11[out]`;
+  `loudnorm=I=-12:TP=-1.2:LRA=11[out]`;
 parts.push(mix);
 
 fs.writeFileSync('scripts/_audio_filter.txt', parts.join(';'));
