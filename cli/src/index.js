@@ -7,7 +7,7 @@ import { runCodex } from './codex.js';
 import { restorePhrases } from './gemini.js';
 
 const HELP = `
-deadair — get paid to wait
+deadair — sell your dead air
 
 usage:
   deadair gemini [args...]   launch Gemini CLI with sponsored spinner phrases

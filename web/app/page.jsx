@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 const DEMO_LINES = [
   'This wait could be sponsored. Your logo here — deadair.online',
-  'Get paid to wait. First 1,000 installs keep 75% forever — deadair.online',
+  'Sell your dead air. First 1,000 installs keep 75% forever — deadair.online',
   'Works with Codex, Gemini CLI, and friends — deadair.online'
 ];
 
@@ -50,7 +50,7 @@ export default function Home() {
     <main>
       <h1>deadair</h1>
       <p className="tagline">
-        Get paid to wait. Sponsored spinner lines for Codex, Gemini CLI, and
+        Your dead air is ad space. Sponsored spinner lines for Codex, Gemini CLI, and
         every coding agent. Advertisers buy the line; <strong>you keep 75%</strong> if
         you're one of the first 1,000 installs. 50% after that, forever.
       </p>

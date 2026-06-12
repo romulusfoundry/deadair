@@ -2,7 +2,7 @@
 // unsold slots). A blank slot reads as a dead network — never show nothing.
 export const HOUSE_LINES = [
   { text: 'This wait could be sponsored. Your logo here', sponsor: 'deadair.online', url: 'https://deadair.online/sponsor' },
-  { text: 'Get paid to wait. First 1,000 installs keep 75% forever', sponsor: 'deadair.online', url: 'https://deadair.online' },
+  { text: 'Sell your dead air. First 1,000 installs keep 75% forever', sponsor: 'deadair.online', url: 'https://deadair.online' },
   { text: 'Works with Codex, Gemini CLI, and friends', sponsor: 'deadair.online', url: 'https://deadair.online' }
 ];
 

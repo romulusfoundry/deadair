@@ -1,7 +1,7 @@
 {
   "name": "deadair",
   "version": "0.1.0",
-  "description": "Get paid to wait. Sponsored spinner lines for Codex, Gemini CLI, and every coding agent that isn't Claude Code.",
+  "description": "Sell your dead air. Sponsored spinner lines for Codex, Gemini CLI, and every coding agent that isn't Claude Code.",
   "type": "module",
   "bin": {
     "deadair": "./src/index.js"

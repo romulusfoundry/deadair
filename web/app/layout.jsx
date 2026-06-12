@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'deadair — get paid to wait',
+  title: 'deadair — sell your dead air',
   description:
     'Sponsored spinner lines for Codex, Gemini CLI, and every coding agent. Install the wrapper, keep 75% of the ad revenue.'
 };

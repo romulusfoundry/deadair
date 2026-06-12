@@ -1,6 +1,6 @@
 # deadair
 
-**Get paid to wait.** Your AI coding agent makes you stare at a spinner for
+**Sell your dead air.** Your AI coding agent makes you stare at a spinner for
 hours a day. `deadair` puts a sponsored line in that dead air — and pays you a
 share of the ad revenue for it.
 
