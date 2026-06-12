@@ -6,7 +6,7 @@ const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 
 export default function Sponsor() {
   const [state, setState] = useState('idle');
-  const [form, setForm] = useState({ email: '', company: '', message: '', bid: '' });
+  const [form, setForm] = useState({ email: '', company: '', message: '', url: '', bid: '' });
 
   const submit = async (e) => {
     e.preventDefault();
@@ -48,6 +48,34 @@ export default function Sponsor() {
         )}
       </div>
 
+      <h2>what your line looks like</h2>
+      <p className="tagline">
+        One sponsored line, clearly attributed, exactly where a developer is
+        already looking. Real renders from the three surface types:
+      </p>
+      <div className="terminal">
+        <span className="prompt">$</span> deadair codex exec "fix the failing tests"{'\n'}
+        <span className="spin">⠹</span> <span className="ad">Your one-liner goes here - yourco.com</span>
+      </div>
+      <p className="tagline">Codex — our ad spinner draws the line while Codex works. Billed on verified rendered seconds.</p>
+      <div className="terminal">
+        <span className="prompt">$</span> deadair gemini{'\n'}
+        <span className="spin">✦</span> <span className="ad">Your one-liner goes here - yourco.com</span> <span className="prompt">(esc to cancel · 8s)</span>
+      </div>
+      <p className="tagline">Gemini CLI — your line runs as a native loading phrase inside Gemini&apos;s own spinner. Reported as estimated impressions.</p>
+      <div className="terminal">
+        <span className="prompt">$</span> deadair hermes{'\n'}
+        ────────────────────────────────────────{'\n'}
+        <span className="spin">▸</span> <span className="ad">Your one-liner goes here - yourco.com</span>{'\n'}
+        ────────────────────────────────────────
+      </div>
+      <p className="tagline">
+        Every other agent — entry and exit banner around the session
+        (deadair hermes, openclaw, aider, copilot, anything). On modern
+        terminals every rendered line is a clickable hyperlink to your
+        site, through our click-logging redirect.
+      </p>
+
       <h2>measurement &amp; anti-fraud</h2>
       <p className="tagline">
         Every line we render is a terminal hyperlink through a logged
@@ -83,9 +111,15 @@ export default function Sponsor() {
             onChange={(e) => setForm({ ...form, company: e.target.value })}
           />
           <textarea
-            rows={3} placeholder="the line you want devs to read (optional)"
+            rows={2} maxLength={60}
+            placeholder="the line you want devs to read — max 60 chars (optional)"
             value={form.message}
             onChange={(e) => setForm({ ...form, message: e.target.value })}
+          />
+          <input
+            type="url" placeholder="landing URL for clicks — https only (optional)"
+            value={form.url}
+            onChange={(e) => setForm({ ...form, url: e.target.value })}
           />
           <input
             type="number" min="1" step="1"
