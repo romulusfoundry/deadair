@@ -6,7 +6,7 @@ const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK;
 
 export default function Sponsor() {
   const [state, setState] = useState('idle');
-  const [form, setForm] = useState({ email: '', company: '', message: '' });
+  const [form, setForm] = useState({ email: '', company: '', message: '', bid: '' });
 
   const submit = async (e) => {
     e.preventDefault();
@@ -61,6 +61,12 @@ export default function Sponsor() {
             rows={3} placeholder="the line you want devs to read (optional)"
             value={form.message}
             onChange={(e) => setForm({ ...form, message: e.target.value })}
+          />
+          <input
+            type="number" min="1" step="1"
+            placeholder="your monthly bid in USD — name any number, founding rate is $250"
+            value={form.bid}
+            onChange={(e) => setForm({ ...form, bid: e.target.value })}
           />
           <button disabled={state === 'sending'}>
             {state === 'sending' ? 'sending…' : state === 'error' ? 'try again' : 'reserve'}
