@@ -12,7 +12,9 @@ const C = {
 };
 
 function esc(s) {
-  return String(s).replace(/'/g, "'\\''").replace(/%/g, '\\\\%');
+  // drawtext re-parses its text value, so ':' needs escaping even inside the
+  // single-quoted filtergraph value; % needs double-escaping (script strips one)
+  return String(s).replace(/'/g, "'\\''").replace(/%/g, '\\\\%').replace(/:/g, '\\:');
 }
 
 let n = 0;
@@ -95,7 +97,7 @@ for (let k = 1; k <= cmd.length; k++) {
 // static prefix stays; agent word becomes its own animated layer
 text({ s: '$ deadair', x: 190, y: 260, size: 28, color: C.text, t0: T, t1: TERM_END, alpha: '1' });
 const AGENT_X = 190 + Math.round(10 * 16.5);
-const AGENTS = ['codex', 'gemini', 'copilot', 'aider'];
+const AGENTS = ['codex', 'gemini', 'copilot', 'aider', 'droid', 'opencode'];
 const SWAP = (TERM_END - T) / AGENTS.length; // ~1.9s each
 const RAMP = 0.35, RISE = 26;
 AGENTS.forEach((agent, i) => {
@@ -125,15 +127,18 @@ text({ s: 'of net ad revenue. The first 1,000 installs. Forever.', x: CENTER, y:
 text({ s: '50/50 after that.', x: CENTER, y: 750, size: 34, color: C.dim, t0: 14.9, t1: TERM_END });
 
 // ---------- Scene E: coverage (18.8 - 21.4) ----------
-text({ s: 'Codex. Gemini CLI.', x: CENTER, y: 455, size: 66, color: C.text, t0: 18.9, t1: 21.3 });
-text({ s: 'And every other agent.', x: CENTER, y: 560, size: 44, color: C.cyan, t0: 19.3, t1: 21.3 });
+text({ s: 'Codex. Gemini. Copilot.', x: CENTER, y: 430, size: 58, color: C.text, t0: 18.9, t1: 21.3 });
+text({ s: 'Aider. Droid. Opencode.', x: CENTER, y: 510, size: 58, color: C.text, t0: 19.1, t1: 21.3 });
+text({ s: 'And every other agent.', x: CENTER, y: 615, size: 44, color: C.cyan, t0: 19.5, t1: 21.3 });
 
 // ---------- Scene F: CTA (21.5 - 26.5) ----------
+text({ s: 'install once:', x: CENTER, y: 415, size: 26, color: C.dim, t0: 21.8, t1: 26.3 });
 box(220, 455, 640, 96, C.panel, 21.7, 26.3);
 boxLine(220, 455, 640, 96, C.border, 2, 21.7, 26.3);
 text({ s: '$ npm i -g deadair', x: CENTER, y: 483, size: 46, color: C.cyan, t0: 21.9, t1: 26.3 });
-text({ s: 'deadair.online', x: CENTER, y: 600, size: 42, color: C.amber, t0: 22.3, t1: 26.3 });
-text({ s: 'sell your dead air', x: CENTER, y: 680, size: 32, color: C.dim, t0: 22.7, t1: 26.3 });
+text({ s: 'then: deadair codex · deadair gemini · deadair run anything', x: CENTER, y: 580, size: 24, color: C.dim, t0: 22.3, t1: 26.3 });
+text({ s: 'deadair.online', x: CENTER, y: 645, size: 42, color: C.amber, t0: 22.5, t1: 26.3 });
+text({ s: 'sell your dead air', x: CENTER, y: 720, size: 32, color: C.dim, t0: 22.9, t1: 26.3 });
 
 const head = `color=c=${C.bg}:s=${W}x${H}:d=${DUR}:r=${FPS}[bg];`;
 const script = head + chain.join(';') + `;[v${n}]format=yuv420p[vout]`;
