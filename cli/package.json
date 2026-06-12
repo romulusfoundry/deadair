@@ -7,17 +7,31 @@
     "deadair": "./src/index.js"
   },
   "files": [
-    "src"
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=18"
   },
   "keywords": [
     "codex",
+    "codex-cli",
     "gemini-cli",
+    "aider",
     "spinner",
-    "ads",
-    "kickbacks"
+    "developer-tools",
+    "cli"
   ],
+  "homepage": "https://deadair.online",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romulusfoundry/deadair.git",
+    "directory": "cli"
+  },
+  "bugs": {
+    "url": "https://github.com/romulusfoundry/deadair/issues"
+  },
+  "author": "Wendell Labs",
   "license": "MIT"
 }
