@@ -9,15 +9,16 @@ export async function GET(request) {
   }
 
   const db = serviceClient();
-  const [{ data: install }, { data: sessions, error }] = await Promise.all([
+  const [{ data: install }, { data: stats, error }] = await Promise.all([
     db.from('deadair_installs_v').select('founder, rev_share').eq('id', installId).single(),
-    db.from('deadair_sessions').select('seconds').eq('install_id', installId)
+    // countable_seconds applies the 8h/day anti-farming cap (SQL view) —
+    // this is the figure accrual math will use, so status shows it too
+    db.from('deadair_install_seconds_v').select('countable_seconds').eq('install_id', installId).maybeSingle()
   ]);
   if (error || !install) return Response.json({ error: 'not found' }, { status: 404 });
 
-  const seconds = sessions.reduce((sum, s) => sum + s.seconds, 0);
   return Response.json({
-    seconds,
+    seconds: stats?.countable_seconds ?? 0,
     rev_share: install.rev_share,
     founder: install.founder,
     // No sponsor revenue pool yet — accrual math lands when the first
