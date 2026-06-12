@@ -86,11 +86,12 @@ text({ s: '⠹ your product here', x: 615, y: 428, size: 23, color: C.cyan, t0: 
 text({ s: 'Your dead air is ad space.', x: CENTER, y: 620, size: 60, color: C.amber, t0: 6.4, t1: 9.6 });
 
 // ---------- Scene C: real usage (9.8 - 14.3) ----------
-// FLASH on the drop (10.2s, synced to the boom): three decaying full-frame
-// cyan pulses — 100ms of spectacle exactly when the beat lands.
-box(0, 0, W, H, '0x2dd4bf@0.30', 10.2, 10.27);
-box(0, 0, W, H, '0x2dd4bf@0.16', 10.27, 10.34);
-box(0, 0, W, H, '0x2dd4bf@0.07', 10.34, 10.41);
+// FLASH when the command is ENTERED (11.1s — typing completes at 11.0):
+// the moment the signal "locks in". Synced to the music drop; the edge
+// static dies at this exact frame too.
+box(0, 0, W, H, '0x2dd4bf@0.30', 11.1, 11.17);
+box(0, 0, W, H, '0x2dd4bf@0.16', 11.17, 11.24);
+box(0, 0, W, H, '0x2dd4bf@0.07', 11.24, 11.31);
 
 // Terminal sits in the upper half and STAYS while the payoff text lands
 // beneath it. STRICTLY SEQUENTIAL beats so the eye tracks one thing at a
@@ -185,11 +186,20 @@ const head = `color=c=${C.bg}:s=${W}x${H}:d=${DUR}:r=${FPS}[bg];`;
 // TV-static "tune-in": dead air IS static. Snow at ~50% opacity over the
 // hook (text stays readable on a paused scroll), clearing as the signal
 // tunes in over the first ~3s.
+// Three-phase static: (1) full snow over the hook, fading down as the copy
+// rolls; (2) snow receding to the EDGES (vignette) through the explainer and
+// terminal scenes; (3) killed dead by the cyan flash at 11.1s when the
+// command is entered — the signal locks in.
 const staticBranch =
-  `color=c=0x707070:s=${W}x${H}:d=3.6:r=${FPS}[ns0];` +
+  `color=c=0x707070:s=${W}x${H}:d=3.4:r=${FPS}[ns0];` +
   `[ns0]noise=alls=100:allf=t+u,hue=s=0,format=yuva420p,colorchannelmixer=aa=0.45,` +
-  `fade=t=out:st=0.6:d=2.6:alpha=1[static]`;
+  `fade=t=out:st=0.6:d=2.6:alpha=1[staticFull];` +
+  `color=c=0x707070:s=${W}x${H}:d=11.3:r=${FPS}[ne0];` +
+  `[ne0]noise=alls=100:allf=t+u,hue=s=0,format=yuva420p,` +
+  `geq=lum='lum(X,Y)':cb='cb(X,Y)':cr='cr(X,Y)':a='115*clip((hypot(X-${W / 2},Y-${H / 2})-400)/170,0,1)',` +
+  `fade=t=out:st=10.95:d=0.15:alpha=1[staticEdge]`;
 const script = head + chain.join(';') + ';' + staticBranch +
-  `;[v${n}][static]overlay=enable='lt(t,3.4)'[vS];[vS]format=yuv420p[vout]`;
+  `;[v${n}][staticFull]overlay=enable='lt(t,3.3)'[vS1]` +
+  `;[vS1][staticEdge]overlay=enable='between(t,3.0,11.1)'[vS2];[vS2]format=yuv420p[vout]`;
 fs.writeFileSync('scripts/_video_filter.txt', script);
 console.log(`wrote filtergraph: ${chain.length} layers + static tune-in, ${DUR}s`);

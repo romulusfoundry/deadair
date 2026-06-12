@@ -7,7 +7,7 @@ import fs from 'node:fs';
 
 const DUR = 29.0;
 const CMD_LEN = 15, TYPE_START = 10.2, TYPE_DUR = 0.8;
-const DROP_MS = 10200;
+const DROP_MS = 11100; // = the flash: command entered, signal locks in
 
 const parts = [];
 const labels = [];
@@ -33,7 +33,7 @@ parts.push(
   'lowpass=f=3800,volume=0.62[motif]'
 ); labels.push('motif');
 
-for (let s = 0; s <= 7; s++) {
+for (let s = 0; s <= 8; s++) {
   const ms = s * 1000;
   parts.push(
     `sine=frequency=52:duration=0.16,volume=0.55,afade=t=in:d=0.005,` +
@@ -42,7 +42,7 @@ for (let s = 0; s <= 7; s++) {
   labels.push(`hb${s}`);
 }
 
-const BUILD = [8200, 8700, 9200, 9450, 9700, 9825, 9950, 10075];
+const BUILD = [9100, 9600, 10100, 10350, 10600, 10725, 10850, 10975];
 BUILD.forEach((ms, i) => {
   const v = (0.5 + i * 0.05).toFixed(2);
   parts.push(
