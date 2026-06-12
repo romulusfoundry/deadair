@@ -1,7 +1,7 @@
 import { serviceClient } from '../../../lib/supabase';
 
 const UUID = /^[0-9a-f-]{36}$/i;
-const SURFACES = new Set(['codex-exec', 'codex-banner', 'gemini-pool']);
+const SURFACES = new Set(['codex-exec', 'codex-banner', 'gemini-pool', 'generic-banner']);
 const MAX_EVENTS = 50;
 
 export async function POST(request) {

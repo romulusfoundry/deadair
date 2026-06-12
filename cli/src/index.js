@@ -4,6 +4,7 @@ import { ensureInstallId, loadConfig, DEADAIR_DIR } from './config.js';
 import { register, fetchStats } from './api.js';
 import { runGemini } from './gemini.js';
 import { runCodex } from './codex.js';
+import { runGeneric } from './generic.js';
 import { restorePhrases } from './gemini.js';
 
 const HELP = `
@@ -12,6 +13,7 @@ deadair — sell your dead air
 usage:
   deadair gemini [args...]   launch Gemini CLI with sponsored spinner phrases
   deadair codex [args...]    launch Codex CLI (exec mode gets the ad spinner)
+  deadair run <cmd> [args]   wrap ANY agent (aider, copilot, droid, ...)
   deadair status             your install id, founder status, time accrued
   deadair uninstall          restore Gemini settings and remove local data
 
@@ -55,6 +57,11 @@ async function main() {
     case 'codex': {
       await register();
       process.exitCode = await runCodex(args);
+      break;
+    }
+    case 'run': {
+      await register();
+      process.exitCode = await runGeneric(args);
       break;
     }
     case 'status':

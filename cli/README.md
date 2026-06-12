@@ -15,6 +15,7 @@ Then just prefix your agent:
 ```sh
 deadair codex          # or: deadair codex exec "fix the tests"
 deadair gemini
+deadair run aider      # wrap ANY agent — aider, copilot, droid, opencode...
 ```
 
 ## What it does
