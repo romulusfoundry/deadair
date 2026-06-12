@@ -105,6 +105,11 @@ export default function Home() {
         not affiliated with OpenAI, Google, or kickbacks.ai —
         they monetize your editor, we monetize your terminal
       </p>
+      <p className="footer">
+        <a href="https://github.com/romulusfoundry/deadair">github</a> (MIT licensed)
+        · <a href="/terms">terms</a> · <a href="/privacy">privacy</a>
+        · every ad human-reviewed · no tracking, ever
+      </p>
     </main>
   );
 }
