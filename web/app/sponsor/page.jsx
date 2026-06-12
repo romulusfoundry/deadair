@@ -133,6 +133,13 @@ export default function Sponsor() {
         </form>
       )}
 
+      <h2>partnerships</h2>
+      <p className="tagline">
+        Got distribution, an audience, or an agent platform that should have
+        native deadair inventory? We move fast —{' '}
+        <a href="mailto:hello@deadair.online">hello@deadair.online</a>
+      </p>
+
       <p className="footer"><a href="/">← back</a></p>
     </main>
   );
