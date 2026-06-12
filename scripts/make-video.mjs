@@ -29,7 +29,7 @@ function text({ s, x, y, size, color, t0, t1, fade = 0.4, alpha }) {
   const a = alpha || fadeAlpha(t0, t1, fade);
   add(
     `drawtext=fontfile=${FONT}:text='${esc(s)}':fontsize=${size}:fontcolor=${color}` +
-    `:x=${x}:y=${y}:alpha='${a}':enable='between(t,${t0},${t1})'`
+    `:x='${x}':y='${y}':alpha='${a}':enable='between(t,${t0},${t1})'`
   );
 }
 function box(x, y, w, h, color, t0, t1) {
@@ -50,9 +50,12 @@ function spinner(x, y, size, color, t0, t1) {
 }
 
 // ---------- Scene A: hook (0 - 3.0) ----------
-text({ s: 'Your AI agent makes you', x: CENTER, y: 420, size: 52, color: C.text, t0: 0.3, t1: 2.8 });
-text({ s: 'wait.', x: CENTER, y: 505, size: 110, color: C.amber, t0: 0.8, t1: 2.8 });
-spinner(CENTER, 690, 52, C.cyan, 1.1, 2.8);
+// Visible from FRAME ZERO — the poster frame when the video doesn't autoplay
+// must already be the hook, not a black square. Fade out only.
+const outOnly = (t1, f = 0.4) => `if(lt(t,${t1 - f}),1,if(lt(t,${t1}),(${t1}-t)/${f},0))`;
+text({ s: 'Your AI agent makes you', x: CENTER, y: 420, size: 52, color: C.text, t0: 0, t1: 2.8, alpha: outOnly(2.8) });
+text({ s: 'wait.', x: CENTER, y: 505, size: 110, color: C.amber, t0: 0, t1: 2.8, alpha: outOnly(2.8) });
+spinner(CENTER, 690, 52, C.cyan, 0, 2.8);
 
 // ---------- Scene B: explainer / before-after (3.0 - 9.8) ----------
 text({ s: 'Every spinner is dead air.', x: CENTER, y: 200, size: 56, color: C.text, t0: 3.3, t1: 9.6 });
@@ -78,17 +81,32 @@ const TERM_END = 18.6;
 box(150, 170, 780, 300, C.panel, 9.8, TERM_END);
 boxLine(150, 170, 780, 300, C.border, 2, 9.8, TERM_END);
 text({ s: 'deadair', x: 185, y: 195, size: 24, color: C.dim, t0: 9.9, t1: TERM_END });
-const cmd = '$ deadair codex exec "fix the failing tests"';
-const typeStart = 10.2, typeDur = 1.3, dt = typeDur / cmd.length;
+// Type "$ deadair codex", then the agent word cycles — slides up & fades out,
+// next agent slides up into the slot: codex -> gemini -> copilot -> aider.
+// Shows multi-agent coverage inside the demo itself.
+const cmd = '$ deadair codex';
+const typeStart = 10.2, typeDur = 0.8, dt = typeDur / cmd.length;
+const T = typeStart + typeDur; // typing done
 for (let k = 1; k <= cmd.length; k++) {
   const tk = typeStart + k * dt;
-  const tkEnd = k === cmd.length ? TERM_END : typeStart + (k + 1) * dt;
+  const tkEnd = k === cmd.length ? T : typeStart + (k + 1) * dt;
   text({ s: cmd.slice(0, k), x: 190, y: 260, size: 28, color: C.text, t0: tk, t1: tkEnd, alpha: '1' });
 }
-const cursorX = 190 + Math.round(cmd.length * 16.5);
-text({
-  s: '█', x: cursorX, y: 260, size: 28, color: C.cyan, t0: typeStart + typeDur, t1: TERM_END,
-  alpha: `if(gt(t,${(typeStart + typeDur).toFixed(2)}),mod(floor(t*2),2),0)`
+// static prefix stays; agent word becomes its own animated layer
+text({ s: '$ deadair', x: 190, y: 260, size: 28, color: C.text, t0: T, t1: TERM_END, alpha: '1' });
+const AGENT_X = 190 + Math.round(10 * 16.5);
+const AGENTS = ['codex', 'gemini', 'copilot', 'aider'];
+const SWAP = (TERM_END - T) / AGENTS.length; // ~1.9s each
+const RAMP = 0.35, RISE = 26;
+AGENTS.forEach((agent, i) => {
+  const a = T + i * SWAP, b = T + (i + 1) * SWAP;
+  const enter = i === 0 ? 0.01 : RAMP; // first word was just typed — no entry
+  // enter: rise from below + fade in; exit: keep rising out + fade away
+  const yExpr = `if(lt(t,${(a + enter).toFixed(2)}),260+${RISE}*(1-(t-${a.toFixed(2)})/${enter}),` +
+    `if(lt(t,${(b - RAMP).toFixed(2)}),260,260-${RISE}*(t-${(b - RAMP).toFixed(2)})/${RAMP}))`;
+  const aExpr = `if(lt(t,${(a + enter).toFixed(2)}),(t-${a.toFixed(2)})/${enter},` +
+    `if(lt(t,${(b - RAMP).toFixed(2)}),1,(${b.toFixed(2)}-t)/${RAMP}))`;
+  text({ s: agent, x: AGENT_X, y: yExpr, size: 28, color: C.cyan, t0: a, t1: b, alpha: aExpr });
 });
 spinner(190, 345, 28, C.cyan, 11.7, TERM_END - 0.2);
 const ads = [

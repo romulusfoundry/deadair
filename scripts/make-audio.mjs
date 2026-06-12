@@ -13,7 +13,8 @@ const parts = [];
 const labels = [];
 
 parts.push('[0:a]volume=0.45[arp]'); labels.push('arp');
-parts.push('[1:a]volume=0.40[pulse]'); labels.push('pulse');
+parts.push('[1:a]volume=0.42[pulse]'); labels.push('pulse');
+parts.push('[2:a]volume=0.16[hat]'); labels.push('hat');
 
 // low drone: A1 + A2 + E3, slow tremolo
 parts.push(`sine=frequency=55:duration=${DUR},volume=0.30[dr1]`);
@@ -45,7 +46,7 @@ labels.push('swell');
 
 const mix = `[${labels.join('][')}]amix=inputs=${labels.length}:normalize=0,` +
   `afade=t=in:st=0:d=1.6,afade=t=out:st=${(DUR - 1.8).toFixed(1)}:d=1.8,` +
-  `loudnorm=I=-12:TP=-1.2:LRA=11[out]`;
+  `loudnorm=I=-11:TP=-1.2:LRA=11[out]`;
 parts.push(mix);
 
 fs.writeFileSync('scripts/_audio_filter.txt', parts.join(';'));
