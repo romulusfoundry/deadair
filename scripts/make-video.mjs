@@ -56,6 +56,15 @@ function spinner(x, y, size, color, t0, t1) {
 // must already be the hook, not a black square. Fade out only.
 const outOnly = (t1, f = 0.4) => `if(lt(t,${t1 - f}),1,if(lt(t,${t1}),(${t1}-t)/${f},0))`;
 text({ s: 'Your AI agent makes you', x: CENTER, y: 420, size: 52, color: C.text, t0: 0, t1: 2.8, alpha: outOnly(2.8) });
+// glitch double-image on "wait." — cyan/red ghosts flickering off-register
+text({
+  s: 'wait.', x: '(w-text_w)/2-4', y: 501, size: 110, color: C.cyan, t0: 0.6, t1: 2.8,
+  alpha: `if(eq(mod(floor(t*13),4),1),0.5,0)*${outOnly(2.8)}`
+});
+text({
+  s: 'wait.', x: '(w-text_w)/2+4', y: 509, size: 110, color: '0xe05252', t0: 0.6, t1: 2.8,
+  alpha: `if(eq(mod(floor(t*17),5),2),0.45,0)*${outOnly(2.8)}`
+});
 text({ s: 'wait.', x: CENTER, y: 505, size: 110, color: C.amber, t0: 0, t1: 2.8, alpha: outOnly(2.8) });
 spinner(CENTER, 690, 52, C.cyan, 0, 2.8);
 
@@ -77,6 +86,12 @@ text({ s: '⠹ your product here', x: 615, y: 428, size: 23, color: C.cyan, t0: 
 text({ s: 'Your dead air is ad space.', x: CENTER, y: 620, size: 60, color: C.amber, t0: 6.4, t1: 9.6 });
 
 // ---------- Scene C: real usage (9.8 - 14.3) ----------
+// FLASH on the drop (10.2s, synced to the boom): three decaying full-frame
+// cyan pulses — 100ms of spectacle exactly when the beat lands.
+box(0, 0, W, H, '0x2dd4bf@0.30', 10.2, 10.27);
+box(0, 0, W, H, '0x2dd4bf@0.16', 10.27, 10.34);
+box(0, 0, W, H, '0x2dd4bf@0.07', 10.34, 10.41);
+
 // Terminal sits in the upper half and STAYS while the payoff text lands
 // beneath it. STRICTLY SEQUENTIAL beats so the eye tracks one thing at a
 // time: type -> cycle agents -> spinner+ad appears -> money text reveals.
@@ -132,7 +147,11 @@ ads.forEach((adText, i) => text({
 }));
 
 // Beat 3: the money reveals below, after the ad has registered (19.6+)
-text({ s: 'And you keep 75%', x: CENTER, y: 560, size: 84, color: C.amber, t0: 19.6, t1: TERM_END });
+// — alpha pulses gently on the beat (2Hz) so the frame never sits static
+text({
+  s: 'And you keep 75%', x: CENTER, y: 560, size: 84, color: C.amber, t0: 19.6, t1: TERM_END,
+  alpha: `(0.88+0.12*sin(2*PI*2*t))*(${fadeAlpha(19.6, TERM_END, 0.3)})`
+});
 text({ s: 'of net ad revenue. The first 1,000 installs. Forever.', x: CENTER, y: 690, size: 34, color: C.text, t0: 20.2, t1: TERM_END });
 text({ s: '50/50 after that.', x: CENTER, y: 750, size: 34, color: C.dim, t0: 20.7, t1: TERM_END });
 

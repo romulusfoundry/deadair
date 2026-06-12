@@ -17,6 +17,8 @@ const labels = [];
 parts.push(`[0:a]chorus=0.6:0.9:50|62:0.35|0.3:0.25|0.4:1.8|2.2,volume=0.52,adelay=${DROP_MS}|${DROP_MS}[arp]`); labels.push('arp');
 parts.push(`[1:a]volume=0.48,adelay=${DROP_MS}|${DROP_MS}[pulse]`); labels.push('pulse');
 parts.push(`[2:a]volume=0.18,adelay=${DROP_MS}|${DROP_MS}[hat]`); labels.push('hat');
+// driving bass under the drop — soft-clipped for analog grit
+parts.push(`[4:a]asoftclip=type=atan,volume=0.5,adelay=${DROP_MS}|${DROP_MS}[bass]`); labels.push('bass');
 
 // --- keys motif: the intro IS this. Vibrato = the expressive/rubato
 // movement; echo = room so it isn't dry; gentle lowpass tames the top.

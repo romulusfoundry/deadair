@@ -57,4 +57,49 @@ BELLS.forEach(([f, file]) => {
   fs.writeFileSync(`scripts/${file}`, parts.join(';'));
 });
 
-console.log('wrote motif + arp + 2 bell filtergraphs (4-partial stacks, humanized)');
+// saw-ish bass note: harmonics 1..5 at 1/n amplitude (additive sawtooth),
+// punchy envelope. Grit (softclip) is applied at the bed level.
+function bassNote(freq, slotMs, durS, vol, idx, parts, mixLabels) {
+  const d = durS.toFixed(3);
+  for (let h = 1; h <= 5; h++) {
+    const v = (vol / h).toFixed(3);
+    parts.push(
+      `sine=frequency=${(freq * h).toFixed(2)}:duration=${d},volume=${v},afade=t=in:d=0.006,` +
+      `afade=t=out:st=${(durS * 0.35).toFixed(3)}:d=${(durS * 0.65).toFixed(3)},adelay=${slotMs}|${slotMs}[b${idx}h${h}]`
+    );
+    mixLabels.push(`b${idx}h${h}`);
+  }
+}
+
+// --- v1 dark bass: straight driving 8ths on the roots, Am bar -> F bar ---
+{
+  const parts = [], labels = [];
+  const ROOTS = [55, 55, 55, 55, 43.65, 43.65, 43.65, 43.65]; // A1 x4, F1 x4
+  ROOTS.forEach((f, i) => bassNote(f, i * 250, 0.17, 0.5, i, parts, labels));
+  parts.push(`[${labels.join('][')}]amix=inputs=${labels.length}:normalize=0,apad=whole_dur=2.0[out]`);
+  fs.writeFileSync('scripts/_bass_filter.txt', parts.join(';'));
+}
+
+// --- v2 EDM bass: syncopated 16th riff (Justice-adjacent feel, our notes) ---
+{
+  const parts = [], labels = [];
+  // 16 slots of 125ms; 0 = rest. A1 / C2 / D2 / E2 / F2 movement
+  const RIFF = [55, 0, 55, 65.41, 0, 55, 55, 73.42, 55, 0, 55, 65.41, 87.31, 0, 82.41, 0];
+  let n = 0;
+  RIFF.forEach((f, i) => {
+    if (f > 0) { bassNote(f, i * 125, 0.13, 0.55, n, parts, labels); n += 1; }
+  });
+  parts.push(`[${labels.join('][')}]amix=inputs=${labels.length}:normalize=0,apad=whole_dur=2.0[out]`);
+  fs.writeFileSync('scripts/_bassedm_filter.txt', parts.join(';'));
+}
+
+// --- clap: bright noise burst, lands on the backbeat (1.0s loop, clap @0.5s) ---
+{
+  const parts = [
+    `anoisesrc=d=0.045:c=white:a=0.6,highpass=f=1200,lowpass=f=4500,` +
+    `afade=t=out:st=0.008:d=0.037,volume=0.8,adelay=500|500,apad=whole_dur=1.0[out]`
+  ];
+  fs.writeFileSync('scripts/_clap_filter.txt', parts.join(';'));
+}
+
+console.log('wrote motif + arp + bells + v1 bass + EDM bass + clap filtergraphs');
