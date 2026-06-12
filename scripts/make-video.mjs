@@ -150,37 +150,30 @@ for (let k = 1; k <= cmd2.length; k++) {
 // Beat 3: the thinking spinner + ad appear UNDER the prompt — the product,
 // demonstrated end to end (17.4+)
 spinner(190, 385, 26, C.cyan, 17.4, TERM_END - 0.2);
-const ads = [
-  'What is predicting the market - standardpoorly.com',
-  'This ad just paid the dev reading it'
-];
-const adWin = [[17.5, 20.4], [20.4, TERM_END - 0.2]];
-ads.forEach((adText, i) => text({
-  s: adText, x: 222, y: 387, size: 22, color: C.dim, t0: adWin[i][0], t1: adWin[i][1], fade: 0.25
-}));
+// ONE ad for the whole window — less text churn, the demo registers
+const adText = 'What is predicting the market - standardpoorly.com';
+text({ s: adText, x: 222, y: 387, size: 22, color: C.dim, t0: 17.5, t1: TERM_END - 0.2, fade: 0.25 });
 
-// Beat 3: the money reveals below, after the ad has registered (19.6+)
-// — alpha pulses gently on the beat (2Hz) so the frame never sits static
-text({
-  s: 'And you keep 75%', x: CENTER, y: 560, size: 84, color: C.amber, t0: 19.6, t1: TERM_END,
-  alpha: `(0.88+0.12*sin(2*PI*2*t))*(${fadeAlpha(19.6, TERM_END, 0.3)})`
-});
-text({ s: 'of net ad revenue. The first 1,000 installs. Forever.', x: CENTER, y: 690, size: 34, color: C.text, t0: 20.2, t1: TERM_END });
-text({ s: '50/50 after that.', x: CENTER, y: 750, size: 34, color: C.dim, t0: 20.7, t1: TERM_END });
+// Beat 3: the money reveal IS the meta line — big amber pop (19.6+),
+// alpha pulses gently on the beat (2Hz) so the frame never sits static
+const pulse = (t0) => `(0.88+0.12*sin(2*PI*2*t))*(${fadeAlpha(t0, TERM_END, 0.3)})`;
+text({ s: 'This ad just paid', x: CENTER, y: 545, size: 80, color: C.amber, t0: 19.6, t1: TERM_END, alpha: pulse(19.6) });
+text({ s: 'the dev reading it', x: CENTER, y: 648, size: 80, color: C.amber, t0: 19.7, t1: TERM_END, alpha: pulse(19.7) });
+text({ s: 'First 1,000 installs keep 75% of net ad revenue', x: CENTER, y: 775, size: 34, color: C.text, t0: 20.4, t1: TERM_END });
+text({ s: 'Forever. 50/50 after that.', x: CENTER, y: 835, size: 34, color: C.dim, t0: 20.9, t1: TERM_END });
 
-// ---------- Scene E: coverage (23.6 - 26.0) ----------
-text({ s: 'Codex. Gemini. Copilot. Aider.', x: CENTER, y: 430, size: 52, color: C.text, t0: 23.7, t1: 25.9 });
-text({ s: 'Hermes. OpenClaw. Droid. Opencode.', x: CENTER, y: 505, size: 52, color: C.text, t0: 23.9, t1: 25.9 });
-text({ s: 'And every other agent.', x: CENTER, y: 610, size: 44, color: C.cyan, t0: 24.3, t1: 25.9 });
-
-// ---------- Scene F: CTA (26.1 - 29.0) ----------
-text({ s: 'install once:', x: CENTER, y: 415, size: 26, color: C.dim, t0: 26.3, t1: 28.8 });
-box(220, 455, 640, 96, C.panel, 26.2, 28.8);
-boxLine(220, 455, 640, 96, C.border, 2, 26.2, 28.8);
-text({ s: '$ npm i -g deadair', x: CENTER, y: 483, size: 46, color: C.cyan, t0: 26.4, t1: 28.8 });
-text({ s: 'then: deadair codex · deadair gemini · deadair run anything', x: CENTER, y: 580, size: 24, color: C.dim, t0: 26.8, t1: 28.8 });
-text({ s: 'deadair.online', x: CENTER, y: 645, size: 42, color: C.amber, t0: 27.0, t1: 28.8 });
-text({ s: 'sell your dead air', x: CENTER, y: 720, size: 32, color: C.dim, t0: 27.3, t1: 28.8 });
+// ---------- Scene E: CTA + coverage merged (23.7 - 28.8) ----------
+// One closing page: install, then the roster — no redundant coverage card
+text({ s: 'install once:', x: CENTER, y: 300, size: 26, color: C.dim, t0: 23.9, t1: 28.8 });
+box(220, 340, 640, 96, C.panel, 23.8, 28.8);
+boxLine(220, 340, 640, 96, C.border, 2, 23.8, 28.8);
+text({ s: '$ npm i -g deadair', x: CENTER, y: 368, size: 46, color: C.cyan, t0: 24.0, t1: 28.8 });
+text({ s: 'then run yours:', x: CENTER, y: 495, size: 24, color: C.dim, t0: 24.4, t1: 28.8 });
+text({ s: 'Codex · Gemini · Copilot · Aider · Hermes', x: CENTER, y: 548, size: 34, color: C.text, t0: 24.6, t1: 28.8 });
+text({ s: 'OpenClaw · Droid · Opencode · Cursor · Goose', x: CENTER, y: 603, size: 34, color: C.text, t0: 24.8, t1: 28.8 });
+text({ s: 'and every other agent: deadair anything', x: CENTER, y: 678, size: 36, color: C.cyan, t0: 25.3, t1: 28.8 });
+text({ s: 'deadair.online', x: CENTER, y: 755, size: 44, color: C.amber, t0: 25.8, t1: 28.8 });
+text({ s: 'sell your dead air', x: CENTER, y: 825, size: 30, color: C.dim, t0: 26.1, t1: 28.8 });
 
 const head = `color=c=${C.bg}:s=${W}x${H}:d=${DUR}:r=${FPS}[bg];`;
 // TV-static "tune-in": dead air IS static. Snow at ~50% opacity over the
