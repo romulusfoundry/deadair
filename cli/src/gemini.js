@@ -76,7 +76,16 @@ export async function runGemini(args) {
   return new Promise((resolve) => {
     child.on('exit', async (code) => {
       const seconds = Math.round((Date.now() - start) / 1000);
-      await reportSession({ cli: 'gemini', seconds, startedAt });
+      // ESTIMATED tier: Gemini's TUI renders the phrases where we can't
+      // observe, so each pool creative gets an equal share of session time.
+      // Sponsor reporting must label gemini-pool as estimated, never verified.
+      const pool = (creatives || []).filter((c) => c.id);
+      const events = pool.map((c) => ({
+        creative_id: c.id,
+        surface: 'gemini-pool',
+        ms: Math.round((seconds * 1000) / pool.length)
+      }));
+      await reportSession({ cli: 'gemini', seconds, startedAt, events });
       resolve(code ?? 0);
     });
     child.on('error', () => {

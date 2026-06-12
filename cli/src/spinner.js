@@ -20,20 +20,42 @@ export class AdSpinner {
     this.lastRotate = Date.now();
     this.timer = null;
     this.visible = false;
+    // verified serve ledger: creative id -> rendered ms. Only accumulates
+    // while the spinner is actually drawing (TTY), so reported time is
+    // honest "on screen" time, not wall time.
+    this.served = new Map();
+    this.servedSince = null;
   }
 
   get enabled() {
     return this.stream.isTTY;
   }
 
+  accumulate() {
+    const current = this.rotation[this.creativeIndex];
+    if (this.servedSince && current?.id) {
+      const ms = Date.now() - this.servedSince;
+      this.served.set(current.id, (this.served.get(current.id) || 0) + ms);
+    }
+    this.servedSince = Date.now();
+  }
+
+  getServeEvents(surface) {
+    return [...this.served.entries()]
+      .filter(([, ms]) => ms >= 250)
+      .map(([creative_id, ms]) => ({ creative_id, surface, ms: Math.round(ms) }));
+  }
+
   start() {
     if (!this.enabled || this.timer) return;
+    this.servedSince = Date.now();
     this.timer = setInterval(() => this.draw(), FRAME_MS);
     this.draw();
   }
 
   draw() {
     if (Date.now() - this.lastRotate > ROTATE_MS) {
+      this.accumulate();
       this.creativeIndex = (this.creativeIndex + 1) % this.rotation.length;
       this.lastRotate = Date.now();
     }
@@ -56,8 +78,12 @@ export class AdSpinner {
   }
 
   stop() {
-    if (this.timer) clearInterval(this.timer);
+    if (this.timer) {
+      this.accumulate();
+      clearInterval(this.timer);
+    }
     this.timer = null;
+    this.servedSince = null;
     this.clearForOutput();
   }
 }

@@ -58,7 +58,7 @@ export async function fetchCreatives() {
   return config.creatives.items;
 }
 
-export async function reportSession({ cli, seconds, startedAt }) {
+export async function reportSession({ cli, seconds, startedAt, events = [] }) {
   const config = loadConfig();
   config.totals.seconds += seconds;
   config.totals.sessions += 1;
@@ -69,7 +69,9 @@ export async function reportSession({ cli, seconds, startedAt }) {
       install_id: config.installId,
       cli,
       seconds,
-      started_at: startedAt
+      started_at: startedAt,
+      // per-creative serve ledger; surface tags the measurement tier
+      events
     });
   } catch {
     // lost telemetry is acceptable; never bother the user
