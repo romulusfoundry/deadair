@@ -79,7 +79,7 @@ export default function Home() {
       <h2>getting paid</h2>
       <ol className="how">
         <li>Your share accrues automatically per rendered wait-second — check it anytime with <code>deadair status</code>.</li>
-        <li>At <strong>$25</strong> you cash out: gift cards or prepaid card, sent to your verified email.</li>
+        <li>From <strong>$25</strong> you can cash out anytime: gift cards or prepaid card, sent to your verified email. Or let it ride — balances over $250 or idle for 12 months are paid out automatically.</li>
         <li>Shares are computed on net ad revenue (after payment + payout processing). No revenue pool yet means balances start at $0 — founding sponsors fund the first pool.</li>
       </ol>
 
