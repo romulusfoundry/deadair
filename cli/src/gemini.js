@@ -9,8 +9,10 @@ import { HOUSE_LINES, formatLine } from './creatives.js';
 const GEMINI_SETTINGS = path.join(os.homedir(), '.gemini', 'settings.json');
 const BACKUP_PATH = path.join(DEADAIR_DIR, 'gemini-witty-backup.json');
 
-// Gemini CLI's sanctioned hook: ui.customWittyPhrases replaces the spinner's
-// loading phrases. We merge sponsored lines in and restore on uninstall.
+// Gemini CLI's sanctioned hooks: ui.customWittyPhrases supplies the spinner's
+// loading phrases, and ui.loadingPhrases gates whether they display at all —
+// it defaults to "off" since ~v0.46, so we must set it to "witty" or the
+// sponsored lines never render. Both are backed up and restored on uninstall.
 export function injectPhrases(creatives) {
   let settings = {};
   try {
@@ -24,12 +26,19 @@ export function injectPhrases(creatives) {
     fs.mkdirSync(DEADAIR_DIR, { recursive: true });
     fs.writeFileSync(
       BACKUP_PATH,
-      JSON.stringify({ customWittyPhrases: settings.ui.customWittyPhrases ?? null })
+      JSON.stringify({
+        customWittyPhrases: settings.ui.customWittyPhrases ?? null,
+        loadingPhrases: settings.ui.loadingPhrases ?? null
+      })
     );
   }
 
   const pool = creatives && creatives.length ? creatives : HOUSE_LINES;
   settings.ui.customWittyPhrases = pool.map(formatLine);
+  // never downgrade "all" (tips + witty) to "witty"
+  if (settings.ui.loadingPhrases !== 'all') {
+    settings.ui.loadingPhrases = 'witty';
+  }
   fs.mkdirSync(path.dirname(GEMINI_SETTINGS), { recursive: true });
   fs.writeFileSync(GEMINI_SETTINGS, JSON.stringify(settings, null, 2));
 }
@@ -44,10 +53,12 @@ export function restorePhrases() {
   }
   const backup = JSON.parse(fs.readFileSync(BACKUP_PATH, 'utf8'));
   settings.ui = settings.ui || {};
-  if (backup.customWittyPhrases === null) {
-    delete settings.ui.customWittyPhrases;
-  } else {
-    settings.ui.customWittyPhrases = backup.customWittyPhrases;
+  for (const key of ['customWittyPhrases', 'loadingPhrases']) {
+    if (backup[key] === null || backup[key] === undefined) {
+      delete settings.ui[key];
+    } else {
+      settings.ui[key] = backup[key];
+    }
   }
   fs.writeFileSync(GEMINI_SETTINGS, JSON.stringify(settings, null, 2));
   fs.unlinkSync(BACKUP_PATH);
