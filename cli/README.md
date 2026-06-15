@@ -33,7 +33,7 @@ Net ad revenue (after payment + payout processing) splits pro-rata by verified
 ad delivery: **the first 1,000 installs keep 75% forever**, 50% after that.
 Spinner surfaces (codex, gemini) earn by rendered wait-time; banner agents
 earn per impression + click — no ad on screen, no accrual. Cash out at $25
-via gift card or prepaid card. Check yours:
+via PayPal, gift card, or prepaid card. Check yours:
 
 ```sh
 deadair status

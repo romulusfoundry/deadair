@@ -27,9 +27,11 @@ keeps 50%. Balances are promotional rewards, not wages — if there is no
 sponsor revenue, balances are $0.
 
 ## Payouts
-Cash out at $25 via gift card or prepaid card. Gift-card disbursement keeps the
-program out of money-transmitter classification and avoids per-payout banking
-fees. Never-linked, long-idle balances return to the community pool.
+Cash out at $25 via PayPal, gift card, or prepaid card through a licensed
+payout provider. The program is structured as promotional rewards paid from
+deadair's own revenue (not a pass-through of advertiser funds), which is what
+keeps it out of money-transmitter classification — independent of payout
+method. Never-linked, long-idle balances return to the community pool.
 
 ## Anti-farming
 Countable time is capped at 8 hours per day per install (enforced in SQL, not

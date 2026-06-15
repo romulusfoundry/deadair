@@ -85,7 +85,7 @@ export default function Home() {
       <h2>getting paid</h2>
       <ol className="how">
         <li>Your share accrues automatically per ad actually delivered — rendered wait-seconds on spinner surfaces, impressions + clicks on banner surfaces. Check it anytime with <code>deadair status</code>.</li>
-        <li>Link an email to your install to claim payouts (one command, magic-link verify). From <strong>$25</strong> you can cash out anytime: gift cards or prepaid card. Or let it ride — linked balances over $250 or idle 12 months are paid out automatically.</li>
+        <li>Link an email to your install to claim payouts (one command, magic-link verify). From <strong>$25</strong> you can cash out anytime: PayPal, gift card, or prepaid card. Or let it ride — linked balances over $250 or idle 12 months are paid out automatically.</li>
         <li>Never linked an email and gone quiet for 12 months? Your balance returns to the community pool for active users — we don't keep it.</li>
         <li>Shares are computed on net ad revenue (after payment + payout processing). No revenue pool yet means balances start at $0 — founding sponsors fund the first pool.</li>
       </ol>

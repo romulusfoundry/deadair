@@ -25,7 +25,7 @@ The first 1,000 installs keep **75%** of their share of ad revenue, forever.
   interactive sessions get a sponsored banner plus session timing.
 - Verified ad delivery reports to the API; net ad revenue (after payment +
   payout processing) splits pro-rata: 75% to the first 1,000 installs forever,
-  50% after. Cash out at $25 via gift card.
+  50% after. Cash out at $25 via PayPal or gift card.
 - Accrual follows what actually displayed: spinner surfaces (Codex exec,
   Gemini CLI) earn by rendered wait-time in 5-second units; banner agents
   (`deadair <anything>`) earn per banner impression + click. Time with no ad
