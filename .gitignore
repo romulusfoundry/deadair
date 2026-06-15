@@ -12,3 +12,9 @@ scripts/_*.wav
 scripts/cascadia.ttf
 scripts/frames/
 scripts/deadair-trailer.mp4
+
+# internal strategy/runbooks — never public
+HERMES.md
+LAUNCH.md
+DEMO.md
+STRIPE_SETUP.md
