@@ -1,0 +1,22 @@
+# deadair
+
+> Sell your dead air. deadair is an open-source terminal ad network: it puts a sponsored line in your AI coding agent's spinner (the "dead air" while it thinks) and pays you a share of the ad revenue for it. Native spinner ads in Codex and Gemini CLI today; sponsored banners for every other agent.
+
+deadair is the open-source counterpart to kickbacks.ai. Where kickbacks monetizes the editor (Claude Code), deadair monetizes the terminal — every other coding agent. Install once, prefix your agent (`deadair codex`, `deadair gemini`, `deadair <anything>`), and keep up to 75% of the ad revenue. MIT licensed, no tracking, uninstalls clean.
+
+## Core pages
+- [Home](https://deadair.online): what deadair is, live install counter, how it works
+- [Sponsor](https://deadair.online/sponsor): for advertisers — ad surfaces, CTR measurement, anti-fraud, founding slots ($250/mo flat)
+- [Terms](https://deadair.online/terms): earnings program, payout rules, anti-fraud policy
+- [Privacy](https://deadair.online/privacy): what is collected (session seconds only)
+
+## Source & install
+- [GitHub repository (MIT)](https://github.com/romulusfoundry/deadair): full source — CLI and web
+- [npm package](https://www.npmjs.com/package/deadair): install with `npm i -g deadair`
+
+## How it works
+- Native spinner ads on two surfaces: Codex (exec mode renders deadair's own ad spinner) and Gemini CLI (via Gemini's sanctioned `ui.customWittyPhrases` setting).
+- Sponsored banners for every other agent (hermes, openclaw, aider, copilot, ...) via `deadair <agent>` — an entry/exit banner plus session timing.
+- Earnings: a flat-rate sponsor pool splits pro-rata by verified ad delivery. The first 1,000 installs keep 75% of their share forever, 50% after. Cash out at $25 via gift card. Time with no ad displayed earns nothing.
+- Privacy: the CLI reports session seconds only — which agent, how long, and country. Never your prompts, code, file paths, or output. Advertiser text is sanitized (ANSI/control chars stripped, ASCII only, length-capped) before it reaches your terminal.
+- Anti-fraud: countable time is capped at 8h/day per install, payouts are human-reviewed, and forfeited balances return to the community pool.
