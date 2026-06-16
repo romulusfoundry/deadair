@@ -51,7 +51,7 @@ The first 1,000 installs keep **75%** of their share of ad revenue, forever.
 ## Sponsors
 
 Your one line in front of developers during the most-watched dead air in
-software. Five founding slots, flat rate — [deadair.online/sponsor](https://deadair.online/sponsor).
+software. Founding slots, flat rate — [deadair.online/sponsor](https://deadair.online/sponsor).
 
 ## Dev
 

@@ -98,7 +98,7 @@ export default function Home() {
       <h2>for sponsors</h2>
       <p className="tagline">
         Your one-liner in front of developers during the most-watched dead air
-        in software. <a href="/sponsor">Five founding slots, flat rate →</a>
+        in software. <a href="/sponsor">Founding slots, flat rate →</a>
       </p>
 
       <p className="footer">
