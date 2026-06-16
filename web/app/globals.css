@@ -105,6 +105,18 @@ ol.how code { color: var(--text); }
   margin: 12px 0;
 }
 .slot .price { color: var(--accent-2); font-size: 1.4rem; font-weight: 700; }
+.slots-left {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  vertical-align: middle;
+}
 
 form.lead { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
 form.lead input, form.lead textarea {

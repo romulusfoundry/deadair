@@ -35,11 +35,11 @@ export default function Sponsor() {
       </p>
 
       <div className="slot">
-        <div className="price">$250/mo — founding rate</div>
+        <div className="price">$250/mo — founding rate <span className="slots-left">5 left</span></div>
         <p className="tagline">
-          5 founding slots. Rate locked for 6 months. Your one-liner + name in
-          rotation across all network inventory, plus founding-sponsor credit
-          on this page. Cancel monthly.
+          Rate locked for 6 months. Your one-liner + name in rotation across all
+          network inventory, plus founding-sponsor credit on this page. Cancel
+          monthly.
         </p>
         {STRIPE_LINK ? (
           <a href={STRIPE_LINK}>claim a founding slot →</a>
