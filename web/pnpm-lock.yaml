@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  postcss: '>=8.5.10'
-
 importers:
 
   .:
@@ -310,8 +307,8 @@ packages:
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
-  postcss@8.5.15:
-    resolution: {integrity: sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==}
+  postcss@8.4.31:
+    resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
     engines: {node: ^10 || ^12 || >=14}
 
   react-dom@19.2.7:
@@ -335,8 +332,8 @@ packages:
     resolution: {integrity: sha512-Ou9I5Ft9WNcCbXrU9cMgPBcCK8LiwLqcbywW3t4oDV37n1pzpuNLsYiAV8eODnjbtQlSDwZ2cUEeQz4E54Hltg==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
 
-  source-map-js@1.2.1:
-    resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
+  source-map-js@1.2.2:
+    resolution: {integrity: sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==}
     engines: {node: '>=0.10.0'}
 
   styled-jsx@5.1.6:
@@ -537,7 +534,7 @@ snapshots:
       '@next/env': 15.5.19
       '@swc/helpers': 0.5.15
       caniuse-lite: 1.0.30001799
-      postcss: 8.5.15
+      postcss: 8.4.31
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       styled-jsx: 5.1.6(react@19.2.7)
@@ -557,11 +554,11 @@ snapshots:
 
   picocolors@1.1.1: {}
 
-  postcss@8.5.15:
+  postcss@8.4.31:
     dependencies:
       nanoid: 3.3.12
       picocolors: 1.1.1
-      source-map-js: 1.2.1
+      source-map-js: 1.2.2
 
   react-dom@19.2.7(react@19.2.7):
     dependencies:
@@ -607,7 +604,7 @@ snapshots:
       '@img/sharp-win32-x64': 0.34.5
     optional: true
 
-  source-map-js@1.2.1: {}
+  source-map-js@1.2.2: {}
 
   styled-jsx@5.1.6(react@19.2.7):
     dependencies:
